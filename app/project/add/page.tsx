@@ -1,10 +1,15 @@
+//Use Client make this file a client component instead of a server component
 'use client';
+
+// This is client-side Supabase instance
+import { createClient } from "@/utils/supabase/client";  // Client-side Supabase instance
+import { useRouter } from "next/navigation";  // Hook for client-side navigation
 
 //I learned how to do Shadcn Forms with NextJs through this video: 
 // https://www.youtube.com/watch?v=oGq9o2BxlaI
 
 // Zod and React Hook Form Imports
-//ShadCn Stuff lol
+//ShadCn Imports, it's a library for UI components
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +22,7 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
 
 //Creating a Zod form Schema for adding project
 //This is for form validation, and will display the error message easily :D 
@@ -26,28 +32,99 @@ const formSchema = z.object({
     //Apparently here, I gotta use coerce method to turn string to number, as input only outputs string
     ratePerHour: z.coerce.number().min(1, {message: "Gotta get paid, right?"}),
     projectTags: z.string().min(1, {message: "Input at least one tag please!"}),
-    projectDescription: z.string().min(1, {message: "Describe your project please!"}),
+    projectDesc: z.string().min(1, {message: "Describe your project please!"}),
 });
 
 export default function AddProject() {
 
+  //Hooks for client component and supabase instance
+  const router = useRouter(); 
+  const supabase = createClient(); 
 
     //Shadcn Form Schema
-
     //This will map the formSchema object to the form 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             projectName: "",
             projectDate: new Date(),
-            ratePerHour: undefined,
+            ratePerHour: 0,
             projectTags: "",
-            projectDescription: "",          
+            projectDesc: "", 
         },
     });
 
     const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-      
+      // try catch block for error handling within handlesubmit
+      try{
+        // Get current user 
+        const { data: { user } } = await supabase.auth.getUser();
+        // If user is not authenticated, throw a toast error, yummy
+        if (!user) {
+          toast({
+            title: "Error",
+            description: "You are not authenticated",
+            variant: "destructive"
+          });
+          return;
+        }
+
+        // If the user is authenticated, insert the project into the database
+        // Code Samples from Supabase doc to insert data
+          // Single insert
+            // const { data, error } = await supabase
+            //   .from('table')
+            //   .insert({ column: 'value' })
+            //   .select()
+
+          // Bulk insert
+            // const { data, error } = await supabase
+            //   .from('table')
+            //   .insert([
+            //     { column: 'value1' },
+            //     { column: 'value2' }
+            //   ])
+            //   .select()
+
+        const { data, error } = await supabase
+        .from('projects')
+        .insert([{
+          userID: user.id,
+          projectName: values.projectName,
+          projectDate: values.projectDate,
+          ratePerHour: values.ratePerHour,
+          projectTags: values.projectTags,
+          projectDesc: values.projectDesc,
+        }])
+        .select();
+
+        // If adding project fails, make a toast, yummy 
+        if (error) {
+          toast({
+            title: "Error",
+            description: "Project creation failed: " + error.message,
+            variant: "destructive"
+          });
+          return;
+        }
+    
+        toast({
+          title: "Success",
+          description: "Project created",
+        });
+    
+        // Redirect to the projects page
+        router.push('/project');
+        router.refresh();
+
+        // If all else fails, make a toast here i guess
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred",
+          variant: "destructive"
+        });      }
+
     }
 
     return (
@@ -143,7 +220,7 @@ export default function AddProject() {
                 {/* Project Description */}
                 <FormField
                 control={form.control}
-                name="projectDescription"
+                name="projectDesc"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Project Description</FormLabel>
