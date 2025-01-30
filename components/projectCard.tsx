@@ -26,7 +26,7 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
   {projects?.map((project) => (
     // Routing to the project details page using projectID
     <Link href={`/project/${project.projectID}`} key={project.projectID}>
-      <div className="bg-[#252836] max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <div className="bg-accent max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
         {/* Project Image and Placeholder */}
         {project.imageUrl ? (
           <img 
@@ -65,7 +65,7 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
         </div>  
 
         {/* Project Description */}
-          <p className="text-[#FFFFFF] text-base">{project.projectDesc}</p>
+          <p className="text-foreground  text-base">{project.projectDesc}</p>
         </div>
       </div>
     </Link>

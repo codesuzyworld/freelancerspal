@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ProjectCard from "@/components/projectCard";
+import AddProjectBtn from "@/components/addProject/addProjectBtn";
 
 
 export default async function Projects() {
@@ -30,7 +31,10 @@ export default async function Projects() {
 
     return (
         <div>
-        <h1>Projects</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Projects</h1>
+          <AddProjectBtn />
+        </div>
         {/* Project Card as Component */}
         <ProjectCard projects={projects || []} />
       </div>
