@@ -42,7 +42,7 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
         {/* Project Details - will take remaining height */}
         <div className="flex-1 px-6 py-4 flex flex-col">
           <div className="font-bold text-xl mb-2">{project.projectName}</div>
-          <p className="text-[#FFFFFF] text-base">
+          <p className="text-[#FFFFFF] text-foreground">
             {new Date(project.created_at).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
