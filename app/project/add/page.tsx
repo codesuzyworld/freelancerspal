@@ -2,8 +2,8 @@
 'use client';
 
 // This is client-side Supabase instance
-import { createClient } from "@/utils/supabase/client";  // Client-side Supabase instance
-import { useRouter } from "next/navigation";  // Hook for client-side navigation
+import { createClient } from "@/utils/supabase/client"; 
+import { useRouter } from "next/navigation"; 
 
 //I learned how to do Shadcn Forms with NextJs through this video: 
 // https://www.youtube.com/watch?v=oGq9o2BxlaI

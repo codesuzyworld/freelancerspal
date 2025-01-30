@@ -7,7 +7,7 @@ interface ProjectPageProps {
   };
 }
 
-export default async function ProjectDetails() {
+export default async function ProjectDetails({ params }: ProjectPageProps) {
   const supabase = await createClient();
 
   // Auth check
@@ -19,5 +19,32 @@ export default async function ProjectDetails() {
     return redirect("/sign-in");
   }
 
+    // Fetch the userID and Project ID so that it shows the project details accordingly
+    const { data: projects, error } = await supabase
+    .from("projects")
+    .select()
+    .eq("userID", user.id)
+    .eq("projectID", params.id)
+    .single();
+    
+    //Error Handling
+    if (error) {
+      console.error("Error fetching project:", error);
+      return <div>Error loading project</div>;
+      }
 
+
+    return (
+      <div>
+        <div className="w-full flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Project Details</h1>
+        </div>
+        <div>
+            <p>{projects.projectName}</p>
+            <p>{projects.projectDate}</p>
+            <p>{projects.projectDesc}</p>
+            <p>{projects.projectTags}</p>       
+        </div>
+      </div>
+    );
 }

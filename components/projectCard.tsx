@@ -22,25 +22,25 @@ interface ProjectCardProps {
 // Project Card Component
 export default function ProjectCard({ projects }: ProjectCardProps) {  
   return (
-<div className="projectContainer flex flex-row flex-wrap flex-initial gap-10">
+<div className="flex flex-wrap gap-6">
   {projects?.map((project) => (
     // Routing to the project details page using projectID
-    <Link href={`/project/${project.projectID}`} key={project.projectID}>
-      <div className="bg-accent max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-        {/* Project Image and Placeholder */}
+    <Link href={`/project/${project.projectID}`} key={project.projectID} 
+          className="w-[384px] h-[450px]">
+      <div className="bg-accent w-full h-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        {/* Project Image with fixed height */}
         {project.imageUrl ? (
           <img 
-            className="w-full h-48 object-cover" 
+            className="w-full h-48 object-cover flex-shrink-0" 
             src={project.imageUrl} 
             alt={project.projectName} 
           />
         ) : (
-          <div className="w-full h-48 bg-black" />
+          <div className="w-full h-48 bg-black flex-shrink-0" />
         )}
 
-
-        {/* Project Details */}
-        <div className="px-6 py-4">
+        {/* Project Details - will take remaining height */}
+        <div className="flex-1 px-6 py-4 flex flex-col">
           <div className="font-bold text-xl mb-2">{project.projectName}</div>
           <p className="text-[#FFFFFF] text-base">
             {new Date(project.created_at).toLocaleDateString('en-US', {
@@ -50,22 +50,22 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
             })}
           </p>
 
-        {/* Tags */}
-        <div className=" pt-4 pb-2">
-          {project.projectTags
+          {/* Tags */}
+          <div className="pt-4 pb-2">
+            {project.projectTags
               .split(',')
               .map((tag: string, index: number) => (
-                  <span
-                      key={index}
-                      className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                      >
-                      #{tag.trim()}
-                  </span>
-          ))}
-        </div>  
+                <span key={index}
+                      className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  #{tag.trim()}
+                </span>
+            ))}
+          </div>  
 
-        {/* Project Description */}
-          <p className="text-foreground  text-base">{project.projectDesc}</p>
+          {/* Description*/}
+          <p className="text-foreground text-base flex-1 overflow-y-auto">
+            {project.projectDesc}
+          </p>
         </div>
       </div>
     </Link>

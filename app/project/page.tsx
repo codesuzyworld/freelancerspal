@@ -31,11 +31,11 @@ export default async function Projects() {
 
     return (
         <div>
-        <div className="flex justify-between items-center">
+        <div className="w-full flex justify-between items-center">
           <h1 className="text-2xl font-bold">Projects</h1>
           <AddProjectBtn />
         </div>
-        {/* Project Card as Component */}
+        {/* Project Card*/}
         <ProjectCard projects={projects || []} />
       </div>
     );
