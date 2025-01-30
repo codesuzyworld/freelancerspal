@@ -2,9 +2,9 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProjectDetails({ params }: ProjectPageProps) {
