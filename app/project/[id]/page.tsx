@@ -9,6 +9,7 @@ interface ProjectPageProps {
 
 export default async function ProjectDetails({ params }: ProjectPageProps) {
   const supabase = await createClient();
+  const projectid = params.id; 
 
   // Auth check
   const {
@@ -23,8 +24,8 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     const { data: projects, error } = await supabase
     .from("projects")
     .select()
+    .eq("projectID", projectid)
     .eq("userID", user.id)
-    .eq("projectID", params.id)
     .single();
     
     //Error Handling
