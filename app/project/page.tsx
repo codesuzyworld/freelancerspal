@@ -51,7 +51,7 @@ export default async function Projects() {
         <div className="flex h-screen">
           <SidebarProvider>
             <AppSidebar className="flex-shrink-0"/>
-            <SidebarInset className="flex-grow min-w-20">
+            <SidebarInset className="flex-grow min-w-30">
               <header className="flex h-16 shrink-0 items-center gap-2">
                 <div className="flex items-center gap-2 px-4 w-full">
                   <SidebarTrigger className="-ml-1" />
@@ -73,7 +73,7 @@ export default async function Projects() {
                 </div>
               </header>
               <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
-                <div className="min-h-[100vh] w-full p-4">
+                <div className="min-h-[100vh] w-50 p-4">
                   <ProjectCard projects={projects || []} />
                 </div>
               </div>
