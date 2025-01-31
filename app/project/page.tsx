@@ -3,6 +3,23 @@ import { redirect } from "next/navigation";
 import ProjectCard from "@/components/projectCard";
 import AddProjectBtn from "@/components/addProject/addProjectBtn";
 
+//SideBar
+import { AppSidebar } from "@/components/sidebar/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+
 
 export default async function Projects() {
     const supabase = await createClient();
@@ -30,13 +47,39 @@ export default async function Projects() {
     // return <pre>{JSON.stringify(projects, null, 2)}</pre>
 
     return (
-        <div>
-        <div className="w-full flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Projects</h1>
-          <AddProjectBtn />
-        </div>
-        {/* Project Card*/}
-        <ProjectCard projects={projects || []} />
+      
+        <div className="flex h-screen">
+          <SidebarProvider>
+            <AppSidebar className="flex-shrink-0"/>
+            <SidebarInset className="flex-grow min-w-20">
+              <header className="flex h-16 shrink-0 items-center gap-2">
+                <div className="flex items-center gap-2 px-4 w-full">
+                  <SidebarTrigger className="-ml-1" />
+                  <Separator orientation="vertical" className="mr-2 h-4" />
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href="#">
+
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>Projects</BreadcrumbPage>
+                        <AddProjectBtn />
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </div>
+              </header>
+              <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
+                <div className="min-h-[100vh] w-full p-4">
+                  <ProjectCard projects={projects || []} />
+                </div>
+              </div>
+            </SidebarInset>
+        </SidebarProvider>
+
       </div>
     );
 }
