@@ -47,39 +47,8 @@ export default async function Projects() {
     // return <pre>{JSON.stringify(projects, null, 2)}</pre>
 
     return (
-      
-        <div className="flex h-screen">
-          <SidebarProvider>
-            <AppSidebar className="flex-shrink-0"/>
-            <SidebarInset className="flex-grow min-w-20">
-              <header className="flex h-16 shrink-0 items-center gap-2">
-                <div className="flex items-center gap-2 px-4 w-full">
-                  <SidebarTrigger className="-ml-1" />
-                  <Separator orientation="vertical" className="mr-2 h-4" />
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href="#">
+           
+      <ProjectCard projects={projects || []} />
 
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator className="hidden md:block" />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage>Projects</BreadcrumbPage>
-                        <AddProjectBtn />
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
-                </div>
-              </header>
-              <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
-                <div className="min-h-[100vh] w-full p-4">
-                  <ProjectCard projects={projects || []} />
-                </div>
-              </div>
-            </SidebarInset>
-        </SidebarProvider>
-
-      </div>
     );
 }

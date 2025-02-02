@@ -11,6 +11,24 @@ import "./globals.css";
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
+
+import { AppSidebar } from "@/components/sidebar/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+
+
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -34,29 +52,43 @@ export default function RootLayout({
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="min-h-screen flex flex-col">
-            <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-              <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-                <div className="flex gap-5 items-center font-semibold">
-                  <Link href={"/project"}>Freelancer's Pal</Link>
-                  <div className="flex items-center gap-2">
-                    {/* <DeployButton /> */}
-                    <ThemeSwitcher />
-                  </div>
-                  
-                </div>
-                {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
-                
-              </div>
-            </nav>
-            {children}
-            <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
+        <div className="flex h-screen">
+            <Toaster />
+                <SidebarProvider>
+                  <AppSidebar className="flex-shrink-0"/>
+                  <SidebarInset className="flex-grow min-w-20">
+                    <header className="flex h-16 shrink-0 items-center gap-2">
+                      <div className="flex items-center gap-2 px-4 w-full">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator orientation="vertical" className="mr-2 h-4" />
+                        <Breadcrumb>
+                          <BreadcrumbList>
+                            <BreadcrumbItem className="hidden md:block">
+                              <BreadcrumbLink href="#">
+
+                              </BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator className="hidden md:block" />
+                            <BreadcrumbItem>
+                              <BreadcrumbPage>Projects</BreadcrumbPage>
+                              {/* <AddProjectBtn /> */}
+                            </BreadcrumbItem>
+                          </BreadcrumbList>
+                        </Breadcrumb>
+                      </div>
+                    </header>
+                    <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
+                      <div className="min-h-[100vh] w-full p-4">
+                        {children}
+
+                        {/* <ProjectCard projects={projects || []} /> */}
+                      </div>
+                    </div>
+                  </SidebarInset>
+              </SidebarProvider>
+            </div>
+        
+        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
               <p>
                 Powered by{" "}
                 <a
@@ -69,9 +101,6 @@ export default function RootLayout({
                 </a>
               </p>
             </footer>
-          </main>
-        </ThemeProvider>
-        <Toaster />
       </body>
     </html>
   );
