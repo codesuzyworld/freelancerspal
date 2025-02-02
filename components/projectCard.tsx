@@ -25,7 +25,7 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
       {projects?.map((project) => (
         <Link href={`/project/${project.projectID}`} key={project.projectID} 
-              className="w-full">
+              className="max-w-30">
           <div className="bg-projectcard text-card-foreground h-[450px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
             {/* Project Image */}
             {project.imageUrl ? (
