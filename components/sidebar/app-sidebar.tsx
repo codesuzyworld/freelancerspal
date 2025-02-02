@@ -27,7 +27,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const data = {
   user: {
@@ -97,10 +97,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Command className="size-4" />
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Freelancer's Pal</span>
 
+                <div className="flex flex-row justify-between items-center gap-10">
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">Freelancer's Pal</span>
+                  </div>                  
                 </div>
+
+                <ThemeSwitcher />
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

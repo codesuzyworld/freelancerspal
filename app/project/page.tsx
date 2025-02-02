@@ -2,6 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ProjectCard from "@/components/projectCard";
 import AddProjectBtn from "@/components/addProject/addProjectBtn";
+import Link from "next/link";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 //SideBar
 import { AppSidebar } from "@/components/sidebar/app-sidebar"
@@ -47,8 +49,35 @@ export default async function Projects() {
     // return <pre>{JSON.stringify(projects, null, 2)}</pre>
 
     return (
-           
-      <ProjectCard projects={projects || []} />
+      <>
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="flex items-center gap-2 px-4 w-full">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
 
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
+                     <div>Projects</div>
+                     <AddProjectBtn />
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
+          <div className="min-h-[100vh] w-full p-4">
+
+            <ProjectCard projects={projects || []} />
+          </div>
+        </div>
+      </>
     );
 }

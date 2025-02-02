@@ -128,10 +128,11 @@ export default function AddProject() {
     }
 
     return (
-        <div>
+        <div className="flex flex-col p-10 items-center justify-center">
             <h1>Create New Project</h1>
             <br></br>
             <Form {...form}>
+
               <form onSubmit={form.handleSubmit(handleSubmit)} className="max-w-md w-full flex flex-col gap-6">
 
                 {/* Project Name */}

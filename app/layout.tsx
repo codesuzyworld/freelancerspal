@@ -9,6 +9,7 @@ import Link from "next/link";
 import "./globals.css";
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import AddProjectBtn  from "@/components/addProject/addProjectBtn";
 
 
 import { AppSidebar } from "@/components/sidebar/app-sidebar"
@@ -51,56 +52,61 @@ export default function RootLayout({
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <div className="flex h-screen">
-            <Toaster />
-                <SidebarProvider>
-                  <AppSidebar className="flex-shrink-0"/>
-                  <SidebarInset className="flex-grow min-w-20">
-                    <header className="flex h-16 shrink-0 items-center gap-2">
-                      <div className="flex items-center gap-2 px-4 w-full">
-                        <SidebarTrigger className="-ml-1" />
-                        <Separator orientation="vertical" className="mr-2 h-4" />
-                        <Breadcrumb>
-                          <BreadcrumbList>
-                            <BreadcrumbItem className="hidden md:block">
-                              <BreadcrumbLink href="#">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex flex-col h-screen">
+            <SidebarProvider>
+              <AppSidebar className="flex-shrink-0"/>
 
-                              </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator className="hidden md:block" />
-                            <BreadcrumbItem>
-                              <BreadcrumbPage>Projects</BreadcrumbPage>
-                              {/* <AddProjectBtn /> */}
-                            </BreadcrumbItem>
-                          </BreadcrumbList>
-                        </Breadcrumb>
-                      </div>
-                    </header>
-                    <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
-                      <div className="min-h-[100vh] w-full p-4">
-                        {children}
+              <SidebarInset className="flex-grow min-w-20">
 
-                        {/* <ProjectCard projects={projects || []} /> */}
+                  <header>
+                    <div className="flex flex-row justify-between gap-5 mx-8 my-3 items-center font-semibold ">
+                      <div className="flex items-center gap-2">
+                        <Link href={"/project"}>Freelancer's Pal</Link>  
+                        <ThemeSwitcher />
                       </div>
+                      {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                     </div>
-                  </SidebarInset>
-              </SidebarProvider>
-            </div>
-        
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-              <p>
-                Powered by{" "}
-                <a
-                  href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-                  target="_blank"
-                  className="font-bold hover:underline"
-                  rel="noreferrer"
-                >
-                  Supabase and Next.js
-                </a>
-              </p>
-            </footer>
+                  </header>
+
+                  <main>
+                    {children}
+                  </main>
+
+
+                {/* <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
+                  <p>
+                    Powered by{" "}
+                    <a href="https://supabase.com/" target="_blank" className="font-bold hover:underline" rel="noreferrer">
+                      Supabase and Next.js
+                    </a>
+                  </p>
+                </footer> */}
+              </SidebarInset>
+            </SidebarProvider>
+            <Toaster />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
+
+
+{/* 
+  OLD HEADER:
+  <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+<div className="flex gap-5 items-center font-semibold">
+  <Link href={"/project"}>Freelancer's Pal</Link>
+  <div className="flex items-center gap-2">
+    {/* <DeployButton /> 
+    <ThemeSwitcher />
+  </div>
+  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+</div>
+</div> */}
