@@ -17,6 +17,8 @@ interface ProjectCardProps {
   projects: Project[] | null;
 }
 
+import { ThemeSwitcher } from "@/components/theme-switcher"
+
 
 
 // Project Card Component
@@ -26,8 +28,9 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
       {projects?.map((project) => (
         <Link href={`/project/${project.projectID}`} key={project.projectID} 
               className="max-w-30">
-          <div className="bg-projectcard text-card-foreground h-[450px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="bg-projectcard-primary text-projectcard-foreground h-[450px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
             {/* Project Image */}
+
             {project.imageUrl ? (
               <img 
                 className="w-full h-48 object-cover flex-shrink-0" 

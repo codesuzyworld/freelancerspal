@@ -2,11 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ProjectCard from "@/components/projectCard";
 import AddProjectBtn from "@/components/addProject/addProjectBtn";
-import Link from "next/link";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 
-//SideBar
-import { AppSidebar } from "@/components/sidebar/app-sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,8 +13,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import {
-  SidebarInset,
-  SidebarProvider,
+
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 

@@ -37,7 +37,12 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --projectcard: 0, 0%, 13%;
+    --projectcard-background: 0 0% 98%;
+    --projectcard-foreground: 240 5.3% 26.1%;
+    --projectcard-primary: 0 0% 98%;
+    --projectcard-primary-foreground: 240 5.9% 10%;
+    --projectcard-accent: 240 4.8% 95.9%;
+    --projectcard-accent-foreground: 240 5.9% 10%;
   }
 
   .dark {
@@ -74,7 +79,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --projectcard: 0, 0%, 13%;
+    --projectcard-background: 240 10% 3.9%;
+    --projectcard-foreground: 0 0% 98%;
+    --projectcard-primary: 240 5.9% 10%;
+    --projectcard-primary-foreground: 0 0% 98%;
+    --projectcard-accent: 240 3.7% 15.9%;
+    --projectcard-accent-foreground: 0 0% 98%;
   }
 }
 

@@ -78,15 +78,6 @@ export default function RootLayout({
                     {children}
                   </main>
 
-
-                {/* <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-                  <p>
-                    Powered by{" "}
-                    <a href="https://supabase.com/" target="_blank" className="font-bold hover:underline" rel="noreferrer">
-                      Supabase and Next.js
-                    </a>
-                  </p>
-                </footer> */}
               </SidebarInset>
             </SidebarProvider>
             <Toaster />
@@ -110,3 +101,13 @@ export default function RootLayout({
   {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
 </div>
 </div> */}
+
+
+{/* <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
+  <p>
+    Powered by{" "}
+    <a href="https://supabase.com/" target="_blank" className="font-bold hover:underline" rel="noreferrer">
+      Supabase and Next.js
+    </a>
+  </p>
+</footer> */}

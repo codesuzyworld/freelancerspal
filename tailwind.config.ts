@@ -68,7 +68,16 @@ const config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+			projectcard: {
+				DEFAULT: 'hsl(var(--projectcard-background))',
+				background: 'hsl(var(--projectcard-background))',
+				foreground: 'hsl(var(--projectcard-foreground))',
+				primary: 'hsl(var(--projectcard-primary))',
+				'primary-foreground': 'hsl(var(--projectcard-primary-foreground))',
+				accent: 'hsl(var(--projectcard-accent))',
+				'accent-foreground': 'hsl(var(--projectcard-accent-foreground))',
+			},
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
