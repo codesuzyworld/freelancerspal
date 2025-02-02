@@ -21,6 +21,20 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import { useState, useEffect } from 'react';
+
 //Creating a Zod form Schema for adding project
 //This is for form validation, and will display the error message easily :D 
 const formSchema = z.object({
@@ -34,19 +48,6 @@ interface AddLinkProps {
   }>
 }
 
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-  } from "@/components/ui/breadcrumb"
-  import { Separator } from "@/components/ui/separator"
-  import {
-    SidebarTrigger,
-  } from "@/components/ui/sidebar"
-import { useState, useEffect } from 'react';
 
 export default function AddLink({ params }: AddLinkProps) {
     const router = useRouter(); 
@@ -123,7 +124,7 @@ export default function AddLink({ params }: AddLinkProps) {
                 description: "Link added successfully",
             });
         
-            router.push(`/project/${id}`);
+            router.push(`/project/${id}?tab=deliverables`); 
             router.refresh();
 
         } catch (error) {

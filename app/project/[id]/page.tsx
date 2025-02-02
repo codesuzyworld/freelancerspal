@@ -2,8 +2,13 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import AddLinkBtn from "@/components/addLink/addLinkBtn";
+import AddTimeBtn from "@/components/addTime/addTimeBtn";
+
+//Importing Datatable and columns
 import { DataTable } from "./linkTable/data-table";
-import { LinkTable, columns } from "./linkTable/columns";
+import { linkcolumns } from "./linkTable/columns";
+import { timecolumns } from "./timeTable/columns";
+
 
 import {
   Breadcrumb,
@@ -25,15 +30,18 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 
+
+//the search params will show the tab that the user is currently on
 interface ProjectPageProps {
   params: Promise<{
     id: string;
   }>;
+  searchParams: { tab?: string };
 }
 
 
 
-export default async function ProjectDetails({ params }: ProjectPageProps) {
+export default async function ProjectDetails({ params, searchParams }: ProjectPageProps) {
   const supabase = await createClient();
   
   // Await the params object first
@@ -60,6 +68,13 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     .from("links")
     .select()  
     .eq("projectID", id); 
+
+    
+    // Get tasks for this specific project
+    const { data: tasks, error:taskError } = await supabase
+    .from("tasks")
+    .select()  
+    .eq("projectID", id); 
     
     //Error Handling
 
@@ -73,9 +88,15 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
         return <div>Error loading links</div>;
     }
 
+    if (taskError) {
+        console.error("Error fetching tasks:", taskError);
+        return <div>Error loading tasks</div>;
+    }
+
     return (
       <>
       <header className="flex h-16 shrink-0 items-center gap-2">
+
         <div className="flex items-center gap-2 px-4 w-full">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
@@ -151,17 +172,18 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
             </div>
 
             {/* Tabs */}
+            
             <div className="flex flex-col gap-4 rounded-2xl p-10">
-              <Tabs defaultValue="deliverables" className="w-[400px]">
+              <Tabs defaultValue={searchParams.tab || "deliverables"} className="w-[1000px]">
                 <TabsList>
-                  <TabsTrigger value="deliverables" >Deliverables</TabsTrigger>
-                  <TabsTrigger value="timesheet" >TimeSheet</TabsTrigger>
+                  <TabsTrigger value="deliverables">Deliverables</TabsTrigger>
+                  <TabsTrigger value="timesheet">TimeSheet</TabsTrigger>
                 </TabsList>
 
                 {/* Deliverables*/}
                 <TabsContent value="deliverables">
 
-                  <div className="flex flex-row justify-between items-center">
+                  <div className="flex flex-row justify-between items-center gap-7">
                       <div className="font-bold text-xl mb-2">Links</div>
                       <AddLinkBtn projectID={projects.projectID}/>
                     </div>
@@ -172,7 +194,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   {/* Check if tehre's links, if not then show no links found msg */}        
                   {links.length > 0 ? (
                     <div className="p-2">
-                      <DataTable columns={columns} data={links} />
+                      <DataTable columns={linkcolumns} data={links} />
                     </div>
                   ) : (
                     <div>
@@ -189,7 +211,20 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                 {/* TimeSheet*/}
 
                 <TabsContent value="timesheet">
-                  Change your password here.
+                <div className="flex flex-row justify-between items-center">
+                      <div className="font-bold text-xl mb-2">TimeSheet</div>
+                      <AddTimeBtn projectID={projects.projectID}/>
+                  </div>
+                {tasks.length > 0 ? (
+                    <div className="p-2">
+                      <DataTable columns={timecolumns} data={tasks} />
+                    </div>
+                  ) : (
+                    <div>
+                      <div>No Tasks found for this Timesheet. Add one!</div>
+                      <AddTimeBtn projectID={projects.projectID} />
+                    </div>
+                  )}
                   </TabsContent>
               </Tabs>
             </div>

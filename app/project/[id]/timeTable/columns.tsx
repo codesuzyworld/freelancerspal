@@ -25,42 +25,37 @@
   
   //Define the Link Table Columns
   //Code from shadCN docs https://ui.shadcn.com/docs/components/data-table#basic-table
-  export type LinkTable = {
-    linkID: string
-    linkName: string
-    link: string
+  export type TimeTable = {
+    taskID: string
+    taskName: string
+    taskDate: Date
+    hourSpent: number
+    taskDesc: string
   }
   
-  export const linkcolumns: ColumnDef<LinkTable>[] = [
+
+  export const timecolumns: ColumnDef<TimeTable>[] = [
 
     {
-      accessorKey: "linkName",
-      header: "Link",
+      accessorKey: "taskName",
+      header: "Task",
     },
     {
-      accessorKey: "link",
-      header: "URL",
+      accessorKey: "taskDate",
+      header: "Date",
     },
-      {
-        accessorKey: "copy",
-        header: "",
-        cell: ({ row }) => {
-            const link = row.original.link
-            return (
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => navigator.clipboard.writeText(link)}
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
-            )
-        },
-      },
+    {
+      accessorKey: "hourSpent",
+      header: "Hours Spent",
+    },
+    {
+      accessorKey: "taskDesc",
+      header: "Description",
+    },
       {
         id: "actions",
         cell: ({ row }) => {
-          const link = row.original
+          const task = row.original
      
           return (
             <DropdownMenu>
@@ -72,17 +67,9 @@
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem
-                  onClick={() => {
-                    navigator.clipboard.writeText(link.link)
-
-                  }}
-                >
-                  Copy Link
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Edit Link</DropdownMenuItem>
-                <DropdownMenuItem>Delete Link</DropdownMenuItem>
+                <DropdownMenuItem>Edit Task</DropdownMenuItem>
+                <DropdownMenuItem>Delete Task</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )
