@@ -68,6 +68,7 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
               <p className="text-foreground text-base flex-1 overflow-y-auto">
                 {project.projectDesc}
               </p>
+              
             </div>
           </div>
         </Link>
