@@ -58,8 +58,8 @@ export default async function Projects() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
-                     <div>Projects</div>
+                  <BreadcrumbPage className="flex flex-row justify-between items-center gap-10 ">
+                     <div className="font-bold text-2xl">Projects</div>
                      <AddProjectBtn />
                   </BreadcrumbPage>
                 </BreadcrumbItem>
