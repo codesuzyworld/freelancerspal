@@ -33,9 +33,9 @@ import {
 
 //the search params will show the tab that the user is currently on
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 
@@ -44,7 +44,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
   const supabase = await createClient();
   
   // Await the params object first
-  const { id, } = await params;
+  const { id } = await params;
 
   // Auth check
   const {

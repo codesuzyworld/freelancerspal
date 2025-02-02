@@ -123,8 +123,10 @@ export default function AddLink({ params }: AddLinkProps) {
                 title: "Success",
                 description: "Link added successfully",
             });
-        
-            router.push(`/project/${id}?tab=deliverables`); 
+            
+            router.push(`/project/${id}`); 
+
+            // router.push(`/project/${id}?tab=deliverables`); 
             router.refresh();
 
         } catch (error) {

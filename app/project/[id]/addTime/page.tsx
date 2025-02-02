@@ -139,7 +139,9 @@ export default function AddTaskForm({ params }: AddTaskProps) {
               });
           
               // show timesheet tab
-              router.push(`/project/${id}?tab=timesheet`);
+            //   router.push(`/project/${id}?tab=timesheet`);
+            router.push(`/project/${id}`);
+
               router.refresh();
   
           } catch (error) {
