@@ -33,19 +33,18 @@ import {
 
 //the search params will show the tab that the user is currently on
 interface ProjectPageProps {
-  params: Promise<{
+  params: {
     id: string;
-  }>;
-  searchParams: { tab?: string };
+  };
 }
 
 
 
-export default async function ProjectDetails({ params, searchParams }: ProjectPageProps) {
+export default async function ProjectDetails({ params }: ProjectPageProps) {
   const supabase = await createClient();
   
   // Await the params object first
-  const { id } = await params;
+  const { id, } = await params;
 
   // Auth check
   const {
@@ -174,7 +173,7 @@ export default async function ProjectDetails({ params, searchParams }: ProjectPa
             {/* Tabs */}
             
             <div className="flex flex-col gap-4 rounded-2xl p-10">
-              <Tabs defaultValue={searchParams.tab || "deliverables"} className="w-[1000px]">
+              <Tabs defaultValue={"deliverables"} className="w-[1000px]">
                 <TabsList>
                   <TabsTrigger value="deliverables">Deliverables</TabsTrigger>
                   <TabsTrigger value="timesheet">TimeSheet</TabsTrigger>
