@@ -3,11 +3,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import AddLinkBtn from "@/components/addLink/addLinkBtn";
 import AddTimeBtn from "@/components/addTime/addTimeBtn";
-
+import AddFileBtn from "@/components/addFile/addFileBtn";
 //Importing Datatable and columns
 import { DataTable } from "./linkTable/data-table";
 import { linkcolumns } from "./linkTable/columns";
 import { timecolumns } from "./timeTable/columns";
+import { filecolumns } from "./fileTable/columns";
 
 
 import {
@@ -75,6 +76,12 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     .select()  
     .eq("projectID", id); 
     
+    // Get files for this specific project
+    const { data: files, error:fileError } = await supabase
+    .from("files")
+    .select()  
+    .eq("projectID", id); 
+
     //Error Handling
 
     if (projectError) {
@@ -91,6 +98,12 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
         console.error("Error fetching tasks:", taskError);
         return <div>Error loading tasks</div>;
     }
+
+    if (fileError) {
+        console.error("Error fetching files:", fileError);
+        return <div>Error loading files</div>;
+    }
+
 
     return (
       <>
@@ -185,7 +198,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   <div className="flex flex-row justify-between items-center gap-7">
                       <div className="font-bold text-xl mb-2">Links</div>
                       <AddLinkBtn projectID={projects.projectID}/>
-                    </div>
+                  </div>
                   {/* Show array in its purest form, for testing purposes lol
                        <pre>{JSON.stringify(links, null, 2)}</pre>
                   */}
@@ -201,9 +214,25 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                       <AddLinkBtn projectID={projects.projectID} />
                     </div>
                   )}
-                  <div className="font-bold text-xl mb-2">Files</div>
+
+                  <div className="flex flex-row justify-between items-center gap-7">
+                      <div className="font-bold text-xl mb-2">Files</div>
+                      <AddFileBtn projectID={projects.projectID}/>
+                  </div>
 
 
+                  {/* Check if tehre's files, if not then show no files found msg */}        
+                  
+                  {files.length > 0 ? (
+                    <div className="p-2">
+                      <DataTable columns={filecolumns} data={files} />
+                    </div>
+                  ) : (
+                    <div>
+                      <div>No files found for this project. Add one!</div>
+                      <AddFileBtn projectID={projects.projectID} />
+                    </div>
+                  )}
                 </TabsContent>
 
 
