@@ -62,7 +62,7 @@ export default function RootLayout({
             <SidebarProvider>
               <AppSidebar className="flex-shrink-0"/>
 
-              <SidebarInset className="flex-grow min-w-20">
+              <SidebarInset className="flex-grow min-w-5">
 
                   <header>
                     <div className="flex flex-row justify-between gap-5 mx-8 my-3 items-center font-semibold ">
