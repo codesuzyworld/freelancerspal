@@ -86,7 +86,7 @@ export default function RootLayout({
                       Supabase and Next.js
                     </a>
                   </p>
-                </footer> */}
+                </footer> updates */}
               </SidebarInset>
             </SidebarProvider>
             <Toaster />
