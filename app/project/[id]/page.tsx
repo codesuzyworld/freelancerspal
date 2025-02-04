@@ -4,11 +4,14 @@ import Link from "next/link";
 import AddLinkBtn from "@/components/addLink/addLinkBtn";
 import AddTimeBtn from "@/components/addTime/addTimeBtn";
 import AddFileBtn from "@/components/addFile/addFileBtn";
+import EditProjectBtn from "@/components/editProject/editProjectBtn";
+
 //Importing Datatable and columns
 import { DataTable } from "./linkTable/data-table";
 import { linkcolumns } from "./linkTable/columns";
 import { timecolumns } from "./timeTable/columns";
 import { filecolumns } from "./fileTable/columns";
+
 
 
 import {
@@ -142,7 +145,10 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
             <div className="flex flex-col gap-4 bg-projectcard-primary rounded-2xl p-10">
 
               {/* Project Name*/}
-              <div className="font-bold text-xl mb-2">{projects.projectName}</div>
+              <div className="flex flex-row justify-between items-center gap-7">
+                <div className="font-bold text-xl mb-2">{projects.projectName}</div>
+                <EditProjectBtn projectID={projects.projectID}/>                
+              </div>
 
               {/* Dates and Rate Per Hour*/}
               <div className="text-base text-projectcard-foreground flex flex-row gap-2">
@@ -166,6 +172,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
 
               {/* Tags */}
               <div className="pt-4 pb-2">
+
                 {projects.projectTags
                   .split(',')
                   .map((tag: string, index: number) => (
