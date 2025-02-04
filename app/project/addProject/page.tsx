@@ -166,7 +166,7 @@ export default function AddProject() {
 
             <BreadcrumbItem>
               <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
-                <div>Add New Link</div>
+                <div>Add New Project</div>
               </BreadcrumbPage>
             </BreadcrumbItem>
 
