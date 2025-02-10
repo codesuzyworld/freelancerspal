@@ -11,6 +11,8 @@
   import { Button } from "@/components/ui/button"
   import { Input } from "@/components/ui/input"
   import { toast } from "@/hooks/use-toast"
+  import Link from "next/link";
+
 
   import {
     DropdownMenu,
@@ -29,6 +31,7 @@
     linkID: string
     linkName: string
     link: string
+    projectID: string
   }
   
   export const linkcolumns: ColumnDef<LinkTable>[] = [
@@ -81,7 +84,11 @@
                   Copy Link
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Edit Link</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/project/${row.original.projectID}/${row.original.linkID}/editLink`} className="w-full">
+                    Edit Link
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Delete Link</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
