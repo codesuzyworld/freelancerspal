@@ -15,7 +15,6 @@ import { use } from 'react';
 //ShadCn Imports, it's a library for UI components
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { Calendar } from "@/components/ui/calendar";
 
 import {
     Breadcrumb,
@@ -30,7 +29,6 @@ import {
     SidebarTrigger,
   } from "@/components/ui/sidebar"
 import { useState, useEffect } from 'react';
-import { Textarea } from "@/components/ui/textarea";
 
 interface DeleteTaskProps {
   params: Promise<{ 

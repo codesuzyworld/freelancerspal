@@ -5,10 +5,9 @@
   // Data Table ShadCN imports
   // This ShadCN table allows users to search and filter items within the table, very handy ;D
   import { ColumnDef } from "@tanstack/react-table"
-  import { ArrowUpDown, ChevronDown, MoreHorizontal, Copy } from "lucide-react"
+  import { MoreHorizontal, Copy } from "lucide-react"
   import { Button } from "@/components/ui/button"
-  import { Input } from "@/components/ui/input"
-  import { toast } from "@/hooks/use-toast"
+
   import Link from "next/link";
 
   import {

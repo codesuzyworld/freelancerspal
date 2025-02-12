@@ -1,3 +1,5 @@
+"use client"
+
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
 import { ThemeSwitcher } from "@/components/theme-switcher";
@@ -6,11 +8,9 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster"
 import Link from "next/link";
-import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
+import { useRouter } from "next/navigation";
 import AddProjectBtn from "@/components/addProject/addProjectBtn";
-
-
 
 import { AppSidebar } from "@/components/sidebar/app-sidebar"
 
@@ -30,7 +30,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -47,29 +46,39 @@ const geistSans = Geist({
 });
 
 export default function AddProjectPage() {
+  const router = useRouter();
+  const supabase = createClient();
+
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="flex items-center justify-between">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/project">Projects</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Add Project</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+    <>
+      <header className="flex h-16 shrink-0 items-center gap-2">
+        <div className="flex items-center gap-2 px-4 w-full">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
+                  <Link href="/project">Projects</Link>
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Add Project</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </header>
       
-      <div className="flex-1 space-y-4">
-        <AddProjectBtn />
+      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+        <div className="flex-1 space-y-4">
+          <AddProjectBtn />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
-
 
 {/* 
   OLD HEADER:
