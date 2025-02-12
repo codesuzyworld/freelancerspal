@@ -2,8 +2,6 @@
 
 //Tabs ShadCN imports
 
-
-  
   // Data Table ShadCN imports
   // This ShadCN table allows users to search and filter items within the table, very handy ;D
   import { ColumnDef } from "@tanstack/react-table"
@@ -12,7 +10,6 @@
   import { Input } from "@/components/ui/input"
   import { toast } from "@/hooks/use-toast"
   import Link from "next/link";
-
 
   import {
     DropdownMenu,
@@ -23,8 +20,6 @@
     DropdownMenuTrigger,
     } from "@/components/ui/dropdown-menu"
 
-
-  
   //Define the Link Table Columns
   //Code from shadCN docs https://ui.shadcn.com/docs/components/data-table#basic-table
   export type LinkTable = {
@@ -85,11 +80,15 @@
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link href={`/project/${row.original.projectID}/${row.original.linkID}/editLink`} className="w-full">
+                  <Link href={`/project/${row.original.projectID}/links/${row.original.linkID}/edit`} className="w-full">
                     Edit Link
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>Delete Link</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/project/${row.original.projectID}/links/${row.original.linkID}/delete`} className="w-full">
+                    Delete Link
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )

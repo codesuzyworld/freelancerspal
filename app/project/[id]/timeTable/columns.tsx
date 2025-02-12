@@ -7,10 +7,11 @@
   // Data Table ShadCN imports
   // This ShadCN table allows users to search and filter items within the table, very handy ;D
   import { ColumnDef } from "@tanstack/react-table"
-  import { ArrowUpDown, ChevronDown, MoreHorizontal, Copy } from "lucide-react"
+  import { ArrowUpDown, ChevronDown, MoreHorizontal, Copy, LinkIcon } from "lucide-react"
   import { Button } from "@/components/ui/button"
   import { Input } from "@/components/ui/input"
   import { toast } from "@/hooks/use-toast"
+  import Link from "next/link"
 
   import {
     DropdownMenu,
@@ -31,6 +32,7 @@
     taskDate: Date
     hourSpent: number
     taskDesc: string
+    projectID: string
   }
   
 
@@ -68,8 +70,16 @@
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Edit Task</DropdownMenuItem>
-                <DropdownMenuItem>Delete Task</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/project/${row.original.projectID}/tasks/${row.original.taskID}/edit`} className="w-full">
+                    Edit Task
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/project/${row.original.projectID}/tasks/${row.original.taskID}/delete`} className="w-full">
+                    Delete Task
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )

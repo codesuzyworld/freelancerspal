@@ -12,8 +12,6 @@ import { linkcolumns } from "./linkTable/columns";
 import { timecolumns } from "./timeTable/columns";
 import { filecolumns } from "./fileTable/columns";
 
-
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -41,8 +39,6 @@ interface ProjectPageProps {
     id: string;
   }>;
 }
-
-
 
 export default async function ProjectDetails({ params }: ProjectPageProps) {
   const supabase = await createClient();
@@ -228,7 +224,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   </div>
 
 
-                  {/* Check if tehre's files, if not then show no files found msg */}        
+                  {/* Check if there's files, if not then show no files found msg */}        
                   
                   {files.length > 0 ? (
                     <div className="p-2">
