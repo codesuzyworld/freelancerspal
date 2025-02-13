@@ -5,6 +5,7 @@ import AddLinkBtn from "@/components/addLink/addLinkBtn";
 import AddTimeBtn from "@/components/addTime/addTimeBtn";
 import AddFileBtn from "@/components/addFile/addFileBtn";
 import EditProjectBtn from "@/components/editProject/editProjectBtn";
+import DeleteProjectBtn from "@/components/deleteProject/deleteProjectBtn";
 
 //Importing Datatable and columns
 import { DataTable } from "./linkTable/data-table";
@@ -143,7 +144,8 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
               {/* Project Name*/}
               <div className="flex flex-row justify-between items-center gap-7">
                 <div className="font-bold text-xl mb-2">{projects.projectName}</div>
-                <EditProjectBtn projectID={projects.projectID}/>                
+                <EditProjectBtn projectID={projects.projectID}/> 
+                <DeleteProjectBtn projectID={projects.projectID}/>                
               </div>
 
               {/* Dates and Rate Per Hour*/}

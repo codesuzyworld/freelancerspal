@@ -11,6 +11,7 @@
   import { Button } from "@/components/ui/button"
   import { toast } from "@/hooks/use-toast"
   import { format } from 'date-fns'
+  import Link from "next/link"
 
   import {
     DropdownMenu,
@@ -31,6 +32,7 @@
     fileName: string
     fileType: string
     filePath: string
+    projectID: string
   }
   
 
@@ -102,8 +104,16 @@
                   Copy File URL
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Edit File</DropdownMenuItem>
-                <DropdownMenuItem>Delete File</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/project/${row.original.projectID}/files/${row.original.fileID}/edit`} className="w-full">
+                      Edit File
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/project/${row.original.projectID}/files/${row.original.fileID}/delete`} className="w-full">
+                    Delete File
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )

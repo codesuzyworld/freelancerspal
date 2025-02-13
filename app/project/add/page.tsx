@@ -1,18 +1,5 @@
-import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { Geist } from "next/font/google";
-import { ThemeProvider } from "next-themes";
-import { Toaster } from "@/components/ui/toaster"
-import Link from "next/link";
-import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
 import AddProjectBtn from "@/components/addProject/addProjectBtn";
-
-
-
-import { AppSidebar } from "@/components/sidebar/app-sidebar"
 
 import {
   Breadcrumb,
