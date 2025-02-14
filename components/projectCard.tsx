@@ -8,7 +8,7 @@ interface Project {
   projectName: string;
   projectDesc: string;
   projectTags: string;
-  imageUrl: string | null;
+  projectPhoto: string | null;
   created_at: string;
 }
 
@@ -31,14 +31,16 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
           <div className="bg-projectcard-primary text-projectcard-foreground h-[450px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
             {/* Project Image */}
 
-            {project.imageUrl ? (
+            {project.projectPhoto ? (
               <img 
-                className="w-full h-48 object-cover flex-shrink-0" 
-                src={project.imageUrl} 
+                className="w-full h-1/2 object-cover flex-shrink-0" 
+                src={project.projectPhoto} 
                 alt={project.projectName} 
               />
             ) : (
-              <div className="w-full h-48 bg-muted flex-shrink-0" />
+              <div className="w-full h-1/2 bg-black flex items-center justify-center text-white">
+              No Image
+              </div>
             )}
 
             {/* Project Details*/}

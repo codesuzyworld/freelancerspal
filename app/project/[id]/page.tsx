@@ -6,6 +6,8 @@ import AddTimeBtn from "@/components/addTime/addTimeBtn";
 import AddFileBtn from "@/components/addFile/addFileBtn";
 import EditProjectBtn from "@/components/editProject/editProjectBtn";
 import DeleteProjectBtn from "@/components/deleteProject/deleteProjectBtn";
+import AddCoverImageBtn from "@/components/addCoverImage/addCoverImageBtn";
+import ClientPortalBtn from "@/components/clientPortal/clientPortalBtn";
 
 //Importing Datatable and columns
 import { DataTable } from "./linkTable/data-table";
@@ -82,6 +84,22 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     .select()  
     .eq("projectID", id); 
 
+    // Calculate total hours
+
+    let totalHours = 0;  
+    // Only calculate if tasks exists
+    if (tasks) {
+      // Loop through each task
+      for (let task of tasks) {
+        // Add each task's hours to the total (use 0 if hours not set)
+        if (task.hourSpent) {
+          totalHours += task.hourSpent;
+        }
+      }
+    }
+
+    const totalAmount = totalHours * projects.ratePerHour;
+
     //Error Handling
 
     if (projectError) {
@@ -106,103 +124,129 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
 
 
     return (
-      <>
-      <header className="flex h-16 shrink-0 items-center gap-2">
-
-        <div className="flex items-center gap-2 px-4 w-full">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
-                  <Link href="/project">Projects</Link>
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
-                  <div>{projects.projectName}</div>
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+      <div className="p-1 md:p-10">
+      <header className="flex h-16 shrink-0 items-center gap-2 w-full">
+        <div className="flex flex-col items-center w-full">
+          <div className="w-full max-w-[1000px] flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    <Link href="/project">Projects</Link>
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    <div>{projects.projectName}</div>
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
         </div>
       </header>
       <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
         <div className="min-h-[100vh] w-full p-4">
 
           {/* Project Info*/}
-            <div className="flex flex-col gap-4 bg-projectcard-primary rounded-2xl p-10">
 
-              {/* Project Name*/}
-              <div className="flex flex-row justify-between items-center gap-7">
-                <div className="font-bold text-xl mb-2">{projects.projectName}</div>
-                <EditProjectBtn projectID={projects.projectID}/> 
-                <DeleteProjectBtn projectID={projects.projectID}/>                
+
+              <div className="flex flex-col justify-center items-center w-full gap-4">
+                {/* Project Name and Actions - Moved outside */}
+                <div className="w-full max-w-[1000px] flex flex-col md:flex-row justify-between items-center gap-4">
+                  <div className="font-bold text-xl">{projects.projectName}</div>
+                  <div className="flex flex-row flex-wrap gap-2">
+                    <EditProjectBtn projectID={projects.projectID}/> 
+                    <DeleteProjectBtn projectID={projects.projectID}/>
+                    <AddCoverImageBtn projectID={projects.projectID}/>                                                  
+                    <ClientPortalBtn projectID={projects.projectID}/>
+                  </div>
+                </div>
+
+                {/* Project Details Card */}
+                <div className="w-full max-w-[1000px] flex flex-col md:flex-row gap-4 bg-projectcard-primary rounded-2xl p-4 md:p-10">
+                  {/* Cover Image */}
+                  <div className="w-full md:w-1/3 h-[200px] md:[300px] rounded-3xl overflow-hidden">
+                    {projects.projectPhoto ? (
+                      <img 
+                        src={projects.projectPhoto} 
+                        alt={`${projects.projectName} cover`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-black flex items-center justify-center text-white">
+                        No Image
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right side - Project Details */}
+                  <div className="flex flex-col flex-1 gap-4">
+                    {/* Dates and Rate Per Hour*/}
+                    <div className="text-base text-projectcard-foreground flex flex-col md:flex-row gap-2">
+                      <p>Project Date: {new Date(projects.projectDate).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                      <p>Created At: {new Date(projects.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                      </p>
+                      <p>
+                        Rate Per Hour: ${projects.ratePerHour}
+                      </p>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="pt-4 pb-2">
+                      {projects.projectTags
+                        .split(',')
+                        .map((tag: string, index: number) => (
+                          <span key={index}
+                                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                            #{tag.trim()}
+                          </span>
+                      ))}
+                    </div>  
+
+                    {/* Description*/}
+                    <p className="text-foreground text-base flex-1 overflow-y-auto">
+                      {projects.projectDesc}
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              {/* Dates and Rate Per Hour*/}
-              <div className="text-base text-projectcard-foreground flex flex-row gap-2">
-                <p>Project Date:{new Date(projects.projectDate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                  </p>
-                <p>Created At:{new Date(projects.created_at).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-                </p>
 
-                <p>
-                  Rate Per Hour: ${projects.ratePerHour}
-                </p>
-              </div>
-
-              {/* Tags */}
-              <div className="pt-4 pb-2">
-
-                {projects.projectTags
-                  .split(',')
-                  .map((tag: string, index: number) => (
-                    <span key={index}
-                          className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                      #{tag.trim()}
-                    </span>
-                ))}
-              </div>  
-
-              {/* Description*/}
-              <p className="text-foreground text-base flex-1 overflow-y-auto">
-                {projects.projectDesc}
-              </p>
-
-            </div>
-
-            {/* Tabs */}
-            
-            <div className="flex flex-col gap-4 rounded-2xl p-10">
-              <Tabs defaultValue={"deliverables"} className="w-[1000px]">
-                <TabsList>
+          {/* Tabs */}
+          
+          <div className="flex flex-col justify-center items-center w-full gap-4 rounded-2xl p-2 md:p-10">
+            <Tabs defaultValue={"deliverables"} className="w-full">
+              <div className="flex justify-center w-full">
+                <TabsList className="grid w-full max-w-[400px] grid-cols-2">
                   <TabsTrigger value="deliverables">Deliverables</TabsTrigger>
                   <TabsTrigger value="timesheet">TimeSheet</TabsTrigger>
                 </TabsList>
+              </div>
 
-                {/* Deliverables*/}
-                <TabsContent value="deliverables">
-
+              {/* Deliverables*/}
+              <TabsContent value="deliverables" className="w-full">
+                <div className="flex flex-col w-full max-w-[1000px] mx-auto">
                   <div className="flex flex-row justify-between items-center gap-7">
-                      <div className="font-bold text-xl mb-2">Links</div>
-                      <AddLinkBtn projectID={projects.projectID}/>
+                    <div className="font-bold text-xl mb-2">Links</div>
+                    <AddLinkBtn projectID={projects.projectID}/>
                   </div>
                   {/* Show array in its purest form, for testing purposes lol
                        <pre>{JSON.stringify(links, null, 2)}</pre>
@@ -221,8 +265,8 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   )}
 
                   <div className="flex flex-row justify-between items-center gap-7">
-                      <div className="font-bold text-xl mb-2">Files</div>
-                      <AddFileBtn projectID={projects.projectID}/>
+                    <div className="font-bold text-xl mb-2">Files</div>
+                    <AddFileBtn projectID={projects.projectID}/>
                   </div>
 
 
@@ -238,17 +282,37 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                       <AddFileBtn projectID={projects.projectID} />
                     </div>
                   )}
-                </TabsContent>
+                </div>
+              </TabsContent>
 
 
-                {/* TimeSheet*/}
+              {/* TimeSheet*/}
 
-                <TabsContent value="timesheet">
-                <div className="flex flex-row justify-between items-center">
-                      <div className="font-bold text-xl mb-2">TimeSheet</div>
-                      <AddTimeBtn projectID={projects.projectID}/>
+              <TabsContent value="timesheet" className="w-full">
+                <div className="flex flex-col w-full max-w-[1000px] mx-auto gap-5">
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="font-bold text-xl mb-2">TimeSheet</div>
+                    <AddTimeBtn projectID={projects.projectID}/>
                   </div>
-                {tasks.length > 0 ? (
+
+                  <div className="flex flex-row justify-between items-center gap-5">
+                    <div className="w-full flex flex-col bg-projectcard-primary px-10 py-3 rounded-lg">
+                      <div className="font-bold text-base text-left">Total Hours Worked</div>
+                      <div className="font-bold text-xl text-left">{totalHours} Hours</div>                                            
+                    </div>
+
+                    <div className="w-full flex flex-col bg-projectcard-primary px-10 py-3 rounded-lg">
+                      <div className="font-bold text-base text-left">Rate Per Hour</div>
+                      <div className="font-bold text-xl text-left">${projects.ratePerHour}</div>                                            
+                    </div>
+
+                    <div className="w-full flex flex-col bg-projectcard-primary px-10 py-3 rounded-lg">
+                      <div className="font-bold text-base text-left">Total Amount</div>
+                      <div className="font-bold text-xl text-left">${totalAmount}</div>                                            
+                    </div>
+
+                  </div>
+                  {tasks.length > 0 ? (
                     <div className="p-2">
                       <DataTable columns={timecolumns} data={tasks} />
                     </div>
@@ -258,13 +322,14 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                       <AddTimeBtn projectID={projects.projectID} />
                     </div>
                   )}
-                  </TabsContent>
-              </Tabs>
-            </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
 
-        </div>
       </div>
+    </div>
 
-      </>
-    );
+    </div>
+  );
 }
