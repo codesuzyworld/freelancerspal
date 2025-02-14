@@ -314,7 +314,10 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   </div>
                   {tasks.length > 0 ? (
                     <div className="p-2">
-                      <DataTable columns={timecolumns} data={tasks} />
+                      <DataTable 
+                        columns={timecolumns} 
+                        data={tasks} 
+                      />
                     </div>
                   ) : (
                     <div>
