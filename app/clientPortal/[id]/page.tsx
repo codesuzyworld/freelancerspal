@@ -1,19 +1,15 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import AddLinkBtn from "@/components/addLink/addLinkBtn";
-import AddTimeBtn from "@/components/addTime/addTimeBtn";
-import AddFileBtn from "@/components/addFile/addFileBtn";
-import EditProjectBtn from "@/components/editProject/editProjectBtn";
-import DeleteProjectBtn from "@/components/deleteProject/deleteProjectBtn";
-import AddCoverImageBtn from "@/components/addCoverImage/addCoverImageBtn";
-import ClientPortalBtn from "@/components/clientPortal/clientPortalBtn";
-import { ClientPortalToggle } from "@/components/ui/ClientPortalToggle";
+import { ExternalLink } from "lucide-react";
+
 //Importing Datatable and columns
-import { DataTable } from "./linkTable/data-table";
-import { linkcolumns } from "./linkTable/columns";
-import { timecolumns } from "./timeTable/columns";
-import { filecolumns } from "./fileTable/columns";
+import { DataTable } from "../../project/[id]/linkTable/data-table";
+import { linkcolumns } from "../../project/[id]/linkTable/columns";
+import { timecolumns } from "../../project/[id]/timeTable/columns";
+import { clientFileColumns } from "./tables/clientFileColumn";
+import { clientTimeColumns } from "./tables/clientTimeColumn";
+
 
 import {
   Breadcrumb,
@@ -27,8 +23,6 @@ import { Separator } from "@/components/ui/separator"
 import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-
-import { Switch } from "@/components/ui/switch"
 
 import {
   Tabs,
@@ -51,21 +45,20 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
   // Await the params object first
   const { id } = await params;
 
-  // Auth check
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
-  if (!user) {
-    return redirect("/sign-in");
-  }
 
     // Fetch the userID and Project ID so that it shows the project details accordingly
     const { data: projects, error:projectError } = await supabase
     .from("projects")
     .select()
     .eq("projectID", id)
+    .eq("clientPortal", true)  // Clients can only see projects that are toggled for public view
     .single();
+
+    // If client portal is not toggled, then just show message
+    if (projectError || !projects) {
+        return redirect("/sign-in");
+    }
 
     // Get links for this specific project
     const { data: links, error:linkError } = await supabase
@@ -73,7 +66,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     .select()  
     .eq("projectID", id); 
 
-    
+
     // Get tasks for this specific project
     const { data: tasks, error:taskError } = await supabase
     .from("tasks")
@@ -141,13 +134,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
                   <BreadcrumbPage>
-                    <Link href="/project">Projects</Link>
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>
-                    <div>{projects.projectName}</div>
+                    <div>{projects.projectName} Client Portal</div>
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -166,11 +153,6 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                 <div className="w-full max-w-[1000px] flex flex-col md:flex-row justify-between items-center gap-4">
                   <div className="font-bold text-xl">{projects.projectName}</div>
                   <div className="flex flex-row flex-wrap gap-2">
-                    <EditProjectBtn projectID={projects.projectID}/> 
-                    <DeleteProjectBtn projectID={projects.projectID}/>
-                    <AddCoverImageBtn projectID={projects.projectID}/>                                                  
-                    <ClientPortalBtn projectID={projects.projectID}/>
-                    <ClientPortalToggle projectID={projects.projectID}/>
                   </div>
                 </div>
 
@@ -249,7 +231,6 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                 <div className="flex flex-col w-full max-w-[1000px] mx-auto">
                   <div className="flex flex-row justify-between items-center gap-7">
                     <div className="font-bold text-xl mb-2">Links</div>
-                    <AddLinkBtn projectID={projects.projectID}/>
                   </div>
                   {/* Show array in its purest form, for testing purposes lol
                        <pre>{JSON.stringify(links, null, 2)}</pre>
@@ -257,32 +238,43 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
 
                   {/* Check if tehre's links, if not then show no links found msg */}        
                   {links.length > 0 ? (
-                    <div className="p-2">
-                      <DataTable columns={linkcolumns} data={links} />
+                    <div className="w-full flex flex-row flex-wrap gap-2">
+                      {links.map((link) => (
+                        <div 
+                          key={link.linkID}
+                          className="flex flex-row justify-center items-center bg-projectcard-primary rounded-full p-4 min-w-[150px]"
+                        >
+                          <a 
+                            href={link.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-foreground hover:underline flex items-center gap-2 cursor-pointer"
+                          >
+                            <div className="text-l font-bold text-foreground">
+                              {link.linkName}
+                            </div>
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </div>
+                      ))}
                     </div>
                   ) : (
-                    <div>
-                      <div>No links found for this project. Add one!</div>
-                      <AddLinkBtn projectID={projects.projectID} />
-                    </div>
+                    <div>No links found for this project.</div>
                   )}
 
                   <div className="flex flex-row justify-between items-center gap-7">
                     <div className="font-bold text-xl mb-2">Files</div>
-                    <AddFileBtn projectID={projects.projectID}/>
                   </div>
-
 
                   {/* Check if there's files, if not then show no files found msg */}        
                   
                   {files.length > 0 ? (
                     <div className="p-2">
-                      <DataTable columns={filecolumns} data={files} />
+                      <DataTable columns={clientFileColumns} data={files} />
                     </div>
                   ) : (
                     <div>
                       <div>No files found for this project. Add one!</div>
-                      <AddFileBtn projectID={projects.projectID} />
                     </div>
                   )}
                 </div>
@@ -295,7 +287,6 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                 <div className="flex flex-col w-full max-w-[1000px] mx-auto gap-5">
                   <div className="flex flex-row justify-between items-center">
                     <div className="font-bold text-xl mb-2">TimeSheet</div>
-                    <AddTimeBtn projectID={projects.projectID}/>
                   </div>
 
                   <div className="flex flex-row justify-between items-center gap-5">
@@ -318,14 +309,13 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   {tasks.length > 0 ? (
                     <div className="p-2">
                       <DataTable 
-                        columns={timecolumns} 
+                        columns={clientTimeColumns} 
                         data={tasks} 
                       />
                     </div>
                   ) : (
                     <div>
                       <div>No Tasks found for this Timesheet. Add one!</div>
-                      <AddTimeBtn projectID={projects.projectID} />
                     </div>
                   )}
                 </div>

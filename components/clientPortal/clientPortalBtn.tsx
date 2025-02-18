@@ -15,7 +15,7 @@ export default function AddTaskBtn({ projectID }: ClientPortalProps) {
 
   return (
     <Button
-      onClick={() => router.push(`/project/${projectID}/clientPortal`)}
+      onClick={() => router.push(`/clientPortal/${projectID}`)}
     >
       <Plus className="h-4 w-4" />
       Client Portal
