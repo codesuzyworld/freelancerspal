@@ -1,9 +1,30 @@
-export default async function Layout({
+import Link from "next/link";
+import { EnvVarWarning } from "@/components/env-var-warning";
+import HeaderAuth from "@/components/header-auth";
+import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+
+
+export default function AuthLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <div className="max-w-7xl flex flex-col gap-12 items-start">{children}</div>
+    <>
+      <header className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] flex flex-row justify-between gap-5 mx-8 my-3 items-center font-semibold">
+          <div className="flex items-center gap-2">
+            <Link href={"/project"} className="text-s md:text-xl">Freelancer's Pal</Link>
+            <ThemeSwitcher />    
+          </div>
+          {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+        </div>
+      </header>
+
+      <main className="min-h-screen bg-muted">
+        {children}
+      </main>
+    </>
   );
 }

@@ -1,12 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 
 //Importing Datatable and columns
-import { DataTable } from "../../project/[id]/linkTable/data-table";
-import { linkcolumns } from "../../project/[id]/linkTable/columns";
-import { timecolumns } from "../../project/[id]/timeTable/columns";
+import { DataTable } from "../../(main)/project/[id]/linkTable/data-table";
 import { clientFileColumns } from "./tables/clientFileColumn";
 import { clientTimeColumns } from "./tables/clientTimeColumn";
 
@@ -119,36 +116,9 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
 
 
     return (
-      <div className="p-1 md:p-10">
-      <header className="flex h-16 shrink-0 items-center gap-2 w-full">
-        <div className="flex flex-col items-center w-full">
-          <div className="w-full max-w-[1000px] flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>
-                    <div>{projects.projectName} Client Portal</div>
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </div>
-      </header>
-      <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
-        <div className="min-h-[100vh] w-full p-4">
-
+<div>
           {/* Project Info*/}
-
-
-              <div className="flex flex-col justify-center items-center w-full gap-4">
+          <div className="flex flex-col justify-center items-center w-full">
                 {/* Project Name and Actions - Moved outside */}
                 <div className="w-full max-w-[1000px] flex flex-col md:flex-row justify-between items-center gap-4">
                   <div className="font-bold text-xl">{projects.projectName}</div>
@@ -324,8 +294,9 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
           </div>
 
       </div>
-    </div>
 
-    </div>
+
+
+
   );
 }

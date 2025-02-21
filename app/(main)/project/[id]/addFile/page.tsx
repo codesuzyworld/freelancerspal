@@ -34,13 +34,13 @@ import { useState, useEffect } from 'react';
 
 
 // we are passing the project id as a param here 
-interface AddCoverImageProps {
+interface AddFileProps {
     params: Promise<{ 
       id: string 
     }>
   }
 
-export default function AddFile({ params }: AddCoverImageProps) {
+export default function AddFile({ params }: AddFileProps) {
 
   // react useState hook to manage file state 
   const [file, setFile] = useState<File | null>(null)
@@ -101,12 +101,11 @@ export default function AddFile({ params }: AddCoverImageProps) {
         return
       }
 
-      // Upload to storage with upsert option, this will replace existing file
+      // Upload to storage
+      // We want a folder structure of projectID/fileName 
       const { data, error } = await supabase.storage
-        .from('coverPhoto')
-        .upload(`${id}/${file.name}`, file, {
-          upsert: true  
-        })
+        .from('projectFiles')
+        .upload(`${id}/${file.name}`, file)
 
       if (error) {
         toast({
@@ -117,24 +116,28 @@ export default function AddFile({ params }: AddCoverImageProps) {
         return
       }
 
-      // Get public URL and update project
+      // After we upload the file, we gotta update the files table so it can be linked with info
+      // First we will try and get the public URL of the file
       const { data: { publicUrl } } = supabase
         .storage
-        .from('coverPhoto')
+        .from('projectFiles')
         .getPublicUrl(`${id}/${file.name}`)
 
-      // Update project record
+      // Add to files table
       const { error: fileError } = await supabase
-        .from('projects')
-        .update({
-          projectPhoto: publicUrl,
+        .from('files')
+        .insert({
+          fileName: file.name,
+          filePath: publicUrl,
+          projectID: id,
+          userID: user.id,
+          fileType: file.type
         })
-        .eq('projectID', id)
 
       if (fileError) {
         toast({
           title: "Error",
-          description: "Failed to update project cover photo record: " + fileError.message,
+          description: "Failed to update files table: " + fileError.message,
           variant: "destructive"
         })
         return
@@ -142,7 +145,7 @@ export default function AddFile({ params }: AddCoverImageProps) {
 
       toast({
         title: "Success",
-        description: "Project cover photo updated successfully",
+        description: "File uploaded successfully",
       })
 
       // Redirect back to the project page
@@ -161,58 +164,68 @@ export default function AddFile({ params }: AddCoverImageProps) {
 
   return (
     <>
-    <header className="flex h-16 shrink-0 items-center gap-2">
-    <div className="flex items-center gap-2 px-4 w-full">
-      <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="mr-2 h-4" />
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink href="#">
+    <div className="flex flex-col w-full justify-center items-center p-10">
+      <header className="flex h-16 w-full md:w-1/2 shrink-0 items-center gap-2">
+      <div className="flex items-center gap-2 px-4 w-full">
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="mr-2 h-4" />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbLink href="#">
 
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator className="hidden md:block" />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator className="hidden md:block" />
 
-          <BreadcrumbItem>
-            <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
-              <Link href="/project">Projects</Link>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
+                <Link href="/project">Projects</Link>
+              </BreadcrumbPage>
+            </BreadcrumbItem>
 
-          <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbSeparator className="hidden md:block" />
 
-          <BreadcrumbItem>
-            <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
-            {/* // One thing I'm learning here is that I have to use backticks to interpolate id here */}
-              <Link href={`/project/${id}`}>{projectName}</Link>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-          
-          <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
+              {/* // One thing I'm learning here is that I have to use backticks to interpolate id here */}
+                <Link href={`/project/${id}`}>{projectName}</Link>
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+            
+            <BreadcrumbSeparator className="hidden md:block" />
 
-          <BreadcrumbItem>
-            <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
-              <div>Upload Cover Imagee</div>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex flex-row justify-between items-center gap-10">
+                <div>Add New File</div>
+              </BreadcrumbPage>
+            </BreadcrumbItem>
 
-        </BreadcrumbList>
-      </Breadcrumb>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+    </header>
+    <div className="w-full md:w-1/2 flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
+          <div className="flex justify-center items-center w-full">
+            <div className="bg-projectcard-primary rounded-lg w-full p-12">
+                <form onSubmit={handleSubmit} className="space-y-4">
+
+                  {/* onChange detects when input changes, 
+                      once changed, create a FileList object to handle file, then from that array,
+                    get the first file from the input, if no file is selected, set to null*/}
+
+                  <Input 
+                    type="file" 
+                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  />
+                  <Button type="submit">Upload File</Button>
+                </form>
+              </div>
+            </div>
+          </div>
     </div>
-  </header>
-    <form onSubmit={handleSubmit} className="space-y-4">
+    
 
-      {/* onChange detects when input changes, 
-          once changed, create a FileList object to handle file, then from that array,
-        get the first file from the input, if no file is selected, set to null*/}
-
-      <Input 
-        type="file" 
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
-      <Button type="submit">Upload File</Button>
-    </form>
     </>
   )
 }

@@ -104,7 +104,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   </div>                  
                 </div>
 
-                <ThemeSwitcher />
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
