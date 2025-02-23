@@ -4,6 +4,7 @@ import ProjectCard from "@/components/projectCard";
 import AddProjectBtn from "@/components/addProject/addProjectBtn";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ProjectSearchBar from "@/components/ui/projectSearchBar";
 
 import {
   Breadcrumb,
@@ -20,7 +21,12 @@ import {
 } from "@/components/ui/sidebar"
 
 
-export default async function Projects() {
+export default async function Projects({ searchParams }: { 
+    searchParams: { 
+      query?: string;
+      page?: string;
+    };
+}) {
     const supabase = await createClient();
 
     // Get auth in this page, if user isnt logged in, redirect to sign in page
@@ -40,17 +46,36 @@ export default async function Projects() {
         .eq('role', 'admin')
         .single();
 
-    // Get projects based on admin status
-    const { data: projects, error } = await supabase
+    // Get projects based on admin status and search query
+    let query = supabase
         .from("projects")
         .select();
-        
+
+    // if there is a search query in the url, then use supabase textSearch functionality 
+    // I copied the code here https://supabase.com/docs/guides/database/full-text-search?queryGroups=language&language=js
+    if (searchParams.query) {
+        query = query.textSearch(
+            'project_search',
+            `${searchParams.query}:*`,
+            {
+                config: 'english',
+                type: 'websearch'
+            }
+        );
+    }
+
+    query = query.order('projectDate', { ascending: false });
+
+    const { data: projects, error } = await query;
+
     // If the user is not an admin, filter to only show user's projects
     if (!adminCheck) {
         const { data: userProjects } = await supabase
             .from("projects")
             .select()
-            .eq("userID", user.id);
+            .eq("userID", user.id)
+            .order('projectDate', { ascending: false });
+
             
         return (
             <div className="flex justify-center w-full">
@@ -114,7 +139,7 @@ export default async function Projects() {
                             <BreadcrumbPage className="flex flex-row justify-between items-center gap-10 ">
                                <div className="font-bold text-2xl">Projects</div>
                                <AddProjectBtn />
-                               <Link href="/test-auth">
+                                <Link href="/test-auth">
                                    <Button variant="outline">
                                      Test Auth
                                    </Button>
@@ -125,6 +150,10 @@ export default async function Projects() {
                       </Breadcrumb>
                     </div>
                   </header>
+                  <div className="w-full">
+                  <ProjectSearchBar placeholder="Search projects by name and tag" />                    
+                  </div>
+
                   <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
                     <div className="min-h-[100vh] w-full p-4">
                         <ProjectCard projects={projects || []} />
