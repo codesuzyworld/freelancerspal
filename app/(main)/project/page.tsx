@@ -5,6 +5,7 @@ import AddProjectBtn from "@/components/addProject/addProjectBtn";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ProjectSearchBar from "@/components/ui/projectSearchBar";
+import { Metadata } from "next";
 
 import {
   Breadcrumb,
@@ -20,15 +21,17 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
+interface SearchParams {
+    query?: string;
+    page?: string;
+}
 
-export default async function Projects({ 
-    searchParams 
-}: { 
-    searchParams: { 
-        query?: string;
-        page?: string;
-    }
-}) {
+interface PageProps {
+    params: { id?: string };
+    searchParams: SearchParams;
+}
+
+export default async function Projects({ searchParams }: PageProps) {
     const supabase = await createClient();
 
     // Get auth in this page, if user isnt logged in, redirect to sign in page
