@@ -4,14 +4,14 @@ import * as React from "react"
 import {
   CalendarClock,
   Command,
-  Frame,
   LifeBuoy,
-  Map,
-  PieChart,
   Send,
   SquareTerminal,
   SquareUserRound
 } from "lucide-react"
+
+import { createClient } from "@/utils/supabase/client"
+import {useEffect, useState} from "react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavProjects } from "@/components/sidebar/nav-projects"
@@ -68,25 +68,14 @@ const data = {
     },
   ],
   projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
+
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [recentProjects, setRecentProjects] = useState([]);
+  const supabase = createClient();
+  
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>

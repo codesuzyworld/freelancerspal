@@ -21,11 +21,13 @@ import {
 } from "@/components/ui/sidebar"
 
 
-export default async function Projects({ searchParams }: { 
+export default async function Projects({ 
+    searchParams 
+}: { 
     searchParams: { 
-      query?: string;
-      page?: string;
-    };
+        query?: string;
+        page?: string;
+    }
 }) {
     const supabase = await createClient();
 
@@ -53,6 +55,11 @@ export default async function Projects({ searchParams }: {
 
     // if there is a search query in the url, then use supabase textSearch functionality 
     // I copied the code here https://supabase.com/docs/guides/database/full-text-search?queryGroups=language&language=js
+    // Also a postgres function is used, which allows supabase to search through two columns
+    //create function project_search(projects) returns text as $$
+    //select $1."projectName" || ' ' || $1."projectTags";
+    //$$ language sql immutable;
+
     if (searchParams.query) {
         query = query.textSearch(
             'project_search',
