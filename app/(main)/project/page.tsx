@@ -27,7 +27,6 @@ interface SearchParams {
 }
 
 interface PageProps {
-    params: { id?: string };
     searchParams: SearchParams;
 }
 
