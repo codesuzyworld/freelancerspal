@@ -5,7 +5,6 @@ import AddProjectBtn from "@/components/addProject/addProjectBtn";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ProjectSearchBar from "@/components/ui/projectSearchBar";
-import { Metadata } from "next";
 
 import {
   Breadcrumb,
@@ -21,16 +20,13 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-interface SearchParams {
-    query?: string;
-    page?: string;
-}
 
-interface PageProps {
-    searchParams: SearchParams;
-}
-
-export default async function Projects({ searchParams }: PageProps) {
+export default async function Projects({ 
+    searchParams 
+}: { 
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }> 
+}) {
+    const params = await searchParams;
     const supabase = await createClient();
 
     // Get auth in this page, if user isnt logged in, redirect to sign in page
@@ -57,15 +53,10 @@ export default async function Projects({ searchParams }: PageProps) {
 
     // if there is a search query in the url, then use supabase textSearch functionality 
     // I copied the code here https://supabase.com/docs/guides/database/full-text-search?queryGroups=language&language=js
-    // Also a postgres function is used, which allows supabase to search through two columns
-    //create function project_search(projects) returns text as $$
-    //select $1."projectName" || ' ' || $1."projectTags";
-    //$$ language sql immutable;
-
-    if (searchParams.query) {
+    if (params.query) {
         query = query.textSearch(
             'project_search',
-            `${searchParams.query}:*`,
+            `${params.query}:*`,
             {
                 config: 'english',
                 type: 'websearch'
