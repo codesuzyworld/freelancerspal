@@ -21,12 +21,12 @@ import {
 } from "@/components/ui/sidebar"
 
 
-export default async function Projects({ searchParams }: { 
-    searchParams: { 
-      query?: string;
-      page?: string;
-    };
+export default async function Projects({ 
+    searchParams 
+}: { 
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }> 
 }) {
+    const params = await searchParams;
     const supabase = await createClient();
 
     // Get auth in this page, if user isnt logged in, redirect to sign in page
@@ -53,10 +53,10 @@ export default async function Projects({ searchParams }: {
 
     // if there is a search query in the url, then use supabase textSearch functionality 
     // I copied the code here https://supabase.com/docs/guides/database/full-text-search?queryGroups=language&language=js
-    if (searchParams.query) {
+    if (params.query) {
         query = query.textSearch(
             'project_search',
-            `${searchParams.query}:*`,
+            `${params.query}:*`,
             {
                 config: 'english',
                 type: 'websearch'
