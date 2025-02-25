@@ -146,10 +146,10 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   {/* Right side - Project Details */}
                   <div className="flex flex-col flex-1 gap-4">
                     {/* Dates and Rate Per Hour*/}
-                    <div className="text-base text-projectcard-foreground flex flex-col md:flex-row gap-2">
-                      <p className="flex flex-col gap-2">
-                        <span className="font-bold">Project Date:</span> 
-                        <span className="text-accent font-bold">
+                    <div className="w-full text-base text-projectcard-foreground flex flex-col md:flex-row gap-5 ">
+                      <p className="flex flex-col gap-1">
+                        <span className="font-bold text-[0.8rem]">Project Date:</span> 
+                        <span className="text-accent-foreground font-bold">
                           {new Date(projects.projectDate).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
@@ -157,18 +157,25 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                         })}
                           </span>
                       </p>
-                      <p className="flex flex-col gap-2 border-2 rounded-lg"><span className="font-bold">Created On:</span> 
-                      <span className="text-accent font-bold">{new Date(projects.created_at).toLocaleDateString('en-US', {
+                      <p className="flex flex-col gap-1 rounded-lg">
+                        <span className="font-bold text-[0.8rem]">Created On:</span> 
+                        <span className="text-accent-foreground font-bold">{new Date(projects.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
                       })}
                       </span>
                       </p>
-                      <p className="flex flex-col gap-2">
-                        <span className="font-bold">Rate Per Hour:</span> 
-                        <span className="text-accent font-bold">
+                      <p className="flex flex-col gap-1">
+                        <span className="font-bold text-[0.8rem]">Rate Per Hour:</span> 
+                        <span className="text-accent-foreground font-bold">
                           ${projects.ratePerHour}
+                        </span>
+                      </p>
+                      <p className="flex flex-col gap-1">
+                        <span className="font-bold text-[0.8rem]">Total Hours:</span> 
+                        <span className="text-accent-foreground font-bold">
+                          {totalHours} Hours
                         </span>
                       </p>
                     </div>

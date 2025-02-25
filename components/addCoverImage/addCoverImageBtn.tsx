@@ -15,7 +15,7 @@ export default function AddTaskBtn({ projectID }: AddCoverImageProps) {
 
   return (
     <Button
-      className="bg-[#238DF7] text-white"
+      className="bg-accent text-white hover:bg-accent/50"
       onClick={() => router.push(`/project/${projectID}/addCoverImage`)}
     >
       <Image className="h-4 w-4" />

@@ -15,7 +15,7 @@ export default function AddTaskBtn({ projectID }: ClientPortalProps) {
 
   return (
     <Button
-      className="bg-[#238DF7] text-white"
+      className="bg-secondary text-white hover:bg-accent/50"
       onClick={() => router.push(`/clientPortal/${projectID}`)}
     >
       <Globe className="h-4 w-4" />
