@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Image } from "lucide-react";
 
 //From the button, get the projectID and pass to the adding Link Page
 interface AddCoverImageProps {
@@ -15,10 +15,11 @@ export default function AddTaskBtn({ projectID }: AddCoverImageProps) {
 
   return (
     <Button
+      className="bg-[#238DF7] text-white"
       onClick={() => router.push(`/project/${projectID}/addCoverImage`)}
     >
-      <Plus className="h-4 w-4" />
-      Add Cover Image
+      <Image className="h-4 w-4" />
+      <span className="hidden md:inline">Add Cover Image</span>
     </Button>
   );
 }

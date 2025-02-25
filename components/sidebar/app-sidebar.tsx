@@ -4,14 +4,12 @@ import * as React from "react"
 import {
   CalendarClock,
   Command,
-  LifeBuoy,
-  Send,
   SquareTerminal,
-  SquareUserRound
+  SquareUserRound,
 } from "lucide-react"
 
-import { createClient } from "@/utils/supabase/client"
-import {useEffect, useState} from "react"
+import Fa6BrandsSquareXTwitter from '~icons/fa6-brands/square-x-twitter'
+import Fa6BrandsGithub from '~icons/fa6-brands/github'
 
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavProjects } from "@/components/sidebar/nav-projects"
@@ -28,6 +26,8 @@ import {
 } from "@/components/ui/sidebar"
 
 import { ThemeSwitcher } from "@/components/theme-switcher"
+import { useState } from "react"
+import { createClient } from "@/utils/supabase/client"
 
 const data = {
   user: {
@@ -48,23 +48,17 @@ const data = {
       icon: CalendarClock,
       isActive: true,
     },
-    {
-      title: "User Management",
-      url: "/project",
-      icon: SquareUserRound,
-      isActive: true,
-    },
   ],
   navSecondary: [
     {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoy,
+      title: "Github",
+      url: "https://github.com/codesuzyworld",
+      icon: Fa6BrandsGithub,
     },
     {
-      title: "Feedback",
-      url: "#",
-      icon: Send,
+      title: "@CodesSuzy19017",
+      url: "https://x.com/CodesSuzy19017",
+      icon: Fa6BrandsSquareXTwitter,
     },
   ],
   projects: [
@@ -83,13 +77,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
+                  <img src="/img/freelancerPalLogo.svg" className="size-4" />
                 </div>
 
-                <div className="flex flex-row justify-between items-center gap-10">
+                <div className="flex flex-row justify-between items-center">
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">Freelancer's Pal</span>
+                    <span className="truncate font-black">Freelancer's Pal</span>
                   </div>                  
                 </div>
 
@@ -100,7 +94,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
