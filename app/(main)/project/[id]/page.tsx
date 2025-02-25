@@ -164,8 +164,8 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
               <div className="flex flex-col justify-center items-center w-full gap-4">
                 {/* Project Name and Actions - Moved outside */}
                 <div className="w-full max-w-[1000px] flex flex-col md:flex-row justify-between items-center gap-4">
-                  <div className="font-bold text-xl">{projects.projectName}</div>
-                  <div className="w-full flex flex-row gap-2">
+                  <div className="w-full font-bold text-xl">{projects.projectName}</div>
+                  <div className="w-full flex flex-row gap-2 justify-end">
                     <EditProjectBtn projectID={projects.projectID}/> 
                     <DeleteProjectBtn projectID={projects.projectID}/>
                     <AddCoverImageBtn projectID={projects.projectID}/>                                                  
