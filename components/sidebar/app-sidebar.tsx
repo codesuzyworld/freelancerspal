@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/sidebar"
 
 import { ThemeSwitcher } from "@/components/theme-switcher"
+import { useState } from "react"
+import { createClient } from "@/utils/supabase/client"
 
 const data = {
   user: {
@@ -60,7 +62,6 @@ const data = {
     },
   ],
   projects: [
-
 
   ],
 }
