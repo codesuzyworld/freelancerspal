@@ -36,13 +36,14 @@ export default function ProjectSearchBar({ placeholder}: { placeholder: string }
     <form className="flex w-full p-4 items-center space-x-2" onReset={(e) => handleSearch('')}>
     <Input 
     type="text" 
+    className="bg-projectcard-background"
     placeholder= {placeholder}
     onChange={(e) =>{
         handleSearch(e.target.value);
     }}
     defaultValue={searchParams.get('query')?.toString() || ''} />
 
-    <Button type="submit">
+    <Button type="submit" className="bg-accent text-white hover:bg-accent/90">
         <Search />
         <span className="hidden md:inline">Search</span>
     </Button>

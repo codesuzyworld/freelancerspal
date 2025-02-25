@@ -10,13 +10,13 @@
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 224.66 69.29% 50.2%;
+    --primary: 0 1.89% 10.39%;
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
+    --accent: 224.66 69.29% 50.2%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -58,7 +58,7 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
+    --accent: 224.66 69.29% 50.2%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -99,8 +99,8 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 17.14 25.61% 32.16%;
+    --accent-foreground: 16.8 51.02% 80.78%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
@@ -120,9 +120,9 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --projectcard-background: 229.41 18.68% 17.84%;
+    --projectcard-background: 10.59 16.19% 20.59%;
     --projectcard-foreground: 0 0% 98%;
-    --projectcard-primary: 17.14 25.61%, 32.16%;
+    --projectcard-primary: 10.59 16.19% 20.59%;
     --projectcard-primary-foreground: 0 0% 98%;
     --projectcard-accent: 240 3.7% 15.9%;
     --projectcard-accent-foreground: 0 0% 98%;
