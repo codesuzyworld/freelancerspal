@@ -36,6 +36,19 @@ export function NavProjects({
 }) {
   const { isMobile } = useSidebar()
 
+  if (!projects.length) {
+    return (
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <SidebarGroupLabel>Recent Projects</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <span className="text-muted-foreground">No recent projects</span>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    )
+  }
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Recent Projects</SidebarGroupLabel>
@@ -69,10 +82,6 @@ export function NavProjects({
                   <span>Share Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>

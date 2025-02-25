@@ -61,10 +61,14 @@ const data = {
   ],
   projects: [
 
+
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [recentProjects, setRecentProjects] = useState([]);
+  const supabase = createClient();
+  
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
