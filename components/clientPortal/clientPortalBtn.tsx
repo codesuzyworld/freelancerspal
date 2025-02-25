@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Globe } from "lucide-react";
 
 //From the button, get the projectID and pass to the adding Link Page
 interface ClientPortalProps {
@@ -15,10 +15,11 @@ export default function AddTaskBtn({ projectID }: ClientPortalProps) {
 
   return (
     <Button
+      className="bg-[#238DF7] text-white"
       onClick={() => router.push(`/clientPortal/${projectID}`)}
     >
-      <Plus className="h-4 w-4" />
-      Client Portal
+      <Globe className="h-4 w-4" />
+      <span className="hidden md:inline">Client Portal</span>
     </Button>
   );
 }

@@ -16,10 +16,11 @@ export default function EditProjectBtn({ projectID }: EditProjectBtnProps) {
 
   return (
     <Button
+      className="bg-[#1B43B8] text-white hover:bg-[#238DF7] hover:text-white"
       onClick={() => router.push(`/project/${projectID}/editProject`)}
     >
       <Pencil className="h-4 w-2" />
-      Edit Project
+      <span className="hidden md:inline">Edit</span>
     </Button>
   );
 }

@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 230 25% 95.29%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
+    --primary: 224.66 69.29% 50.2%;
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
@@ -29,7 +29,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 220 52.94% 93.33%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -39,14 +39,14 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
     --projectcard-background: 0 0% 98%;
     --projectcard-foreground: 240 5.3% 26.1%;
-    --projectcard-primary: 0 0% 95%;
+    --projectcard-primary: 226.67 25.71% 86.27%;
     --projectcard-primary-foreground: 240 5.9% 10%;
     --projectcard-accent: 240 4.8% 95.9%;
     --projectcard-accent-foreground: 240 5.9% 10%;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 230 18.18% 12.94%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
@@ -71,7 +71,7 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 229.41 18.68% 17.84%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -79,9 +79,50 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --projectcard-background: 240 10% 3.9%;
+    --projectcard-background: 229.41 18.68% 17.84%;
     --projectcard-foreground: 0 0% 98%;
-    --projectcard-primary: 240 5.9% 10%;
+    --projectcard-primary: 229.41 18.68% 17.84%;
+    --projectcard-primary-foreground: 0 0% 98%;
+    --projectcard-accent: 240 3.7% 15.9%;
+    --projectcard-accent-foreground: 0 0% 98%;
+  }
+  .coffee {
+    --background: 25 18.18% 12.94%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --radius: 1rem;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 17.14 25.61%, 32.16%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --projectcard-background: 229.41 18.68% 17.84%;
+    --projectcard-foreground: 0 0% 98%;
+    --projectcard-primary: 17.14 25.61%, 32.16%;
     --projectcard-primary-foreground: 0 0% 98%;
     --projectcard-accent: 240 3.7% 15.9%;
     --projectcard-accent-foreground: 0 0% 98%;

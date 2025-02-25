@@ -60,7 +60,7 @@ export default function ProjectCard({ projects }: ProjectCardProps) {
                   .split(',')
                   .map((tag: string, index: number) => (
                     <span key={index}
-                          className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                          className="inline-block bg-[#3257C4] rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
                       #{tag.trim()}
                     </span>
                 ))}

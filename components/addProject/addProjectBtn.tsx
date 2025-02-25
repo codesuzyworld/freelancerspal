@@ -7,7 +7,7 @@ export default function AddProjectBtn() {
       <Link
         href="/project/addProject"
       >
-        <Button className="flex items-center gap-2" size={"sm"}>
+        <Button className="flex items-center gap-2 bg-[#1B43B8] text-white hover:bg-[#238DF7] hover:text-white" size={"sm"}>
           <span>Add Project</span>
         </Button>
       </Link>

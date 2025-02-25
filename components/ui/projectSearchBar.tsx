@@ -44,7 +44,7 @@ export default function ProjectSearchBar({ placeholder}: { placeholder: string }
 
     <Button type="submit">
         <Search />
-        Search
+        <span className="hidden md:inline">Search</span>
     </Button>
 
     <Button 

@@ -96,11 +96,11 @@ export default async function Projects({
                                 <BreadcrumbPage className="flex flex-row justify-between items-center gap-10 ">
                                    <div className="font-bold text-2xl">Projects</div>
                                    <AddProjectBtn />
-                                   <Link href="/test-auth">
+                                   {/* <Link href="/test-auth">
                                        <Button variant="outline">
                                          Test Auth
                                        </Button>
-                                     </Link>                       
+                                     </Link>                        */}
                                 </BreadcrumbPage>
                               </BreadcrumbItem>
                             </BreadcrumbList>
@@ -139,11 +139,11 @@ export default async function Projects({
                             <BreadcrumbPage className="flex flex-row justify-between items-center gap-10 ">
                                <div className="font-bold text-2xl">Projects</div>
                                <AddProjectBtn />
-                                <Link href="/test-auth">
+                                {/* <Link href="/test-auth">
                                    <Button variant="outline">
                                      Test Auth
                                    </Button>
-                                 </Link>                       
+                                 </Link>                        */}
                             </BreadcrumbPage>
                           </BreadcrumbItem>
                         </BreadcrumbList>

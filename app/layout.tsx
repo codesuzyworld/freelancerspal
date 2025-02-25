@@ -1,4 +1,4 @@
-import { Geist } from "next/font/google";
+import { Nunito } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css";
@@ -13,7 +13,7 @@ export const metadata = {
   description: "Manage your projects and invoices with ease",
 };
 
-const geistSans = Geist({
+const nunitoSans = Nunito({
   display: "swap",
   subsets: ["latin"],
 });
@@ -24,13 +24,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={geistSans.className} suppressHydrationWarning>
+    <html lang="en" className={nunitoSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
+          storageKey="freelancer-theme"
+          themes={["light", "dark", "coffee", "system"]}
+          value={{
+            light: "light",
+            dark: "dark",
+            coffee: "coffee",
+            system: "system"
+          }}
         >
           {children}
           <Toaster />

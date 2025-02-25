@@ -194,21 +194,37 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   {/* Right side - Project Details */}
                   <div className="flex flex-col flex-1 gap-4">
                     {/* Dates and Rate Per Hour*/}
-                    <div className="text-base text-projectcard-foreground flex flex-col md:flex-row gap-2">
-                      <p>Project Date: {new Date(projects.projectDate).toLocaleDateString('en-US', {
+                    <div className="w-full text-base text-projectcard-foreground flex flex-col md:flex-row gap-5 ">
+                      <p className="flex flex-col gap-1">
+                        <span className="font-bold text-[0.8rem]">Project Date:</span> 
+                        <span className="text-[#238DF7] font-bold">
+                          {new Date(projects.projectDate).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
                         })}
+                          </span>
                       </p>
-                      <p>Created At: {new Date(projects.created_at).toLocaleDateString('en-US', {
+                      <p className="flex flex-col gap-1 rounded-lg">
+                        <span className="font-bold text-[0.8rem]">Created On:</span> 
+                        <span className="text-[#238DF7] font-bold">{new Date(projects.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
                       })}
+                      </span>
                       </p>
-                      <p>
-                        Rate Per Hour: ${projects.ratePerHour}
+                      <p className="flex flex-col gap-1">
+                        <span className="font-bold text-[0.8rem]">Rate Per Hour:</span> 
+                        <span className="text-[#238DF7] font-bold">
+                          ${projects.ratePerHour}
+                        </span>
+                      </p>
+                      <p className="flex flex-col gap-1">
+                        <span className="font-bold text-[0.8rem]">Total Hours:</span> 
+                        <span className="text-[#238DF7] font-bold">
+                          {totalHours} Hours
+                        </span>
                       </p>
                     </div>
 
@@ -218,7 +234,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                         .split(',')
                         .map((tag: string, index: number) => (
                           <span key={index}
-                                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                className="inline-block bg-[#3257C4] rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
                             #{tag.trim()}
                           </span>
                       ))}
