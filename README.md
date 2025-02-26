@@ -1,5 +1,5 @@
 <a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Freelancer's Pal, manage and deliver your projects with ease" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
+  <img alt="Freelancer's Pal, manage and deliver your projects with ease" src="https://freelancerspal-er4k37d95-codesuzys-projects.vercel.app/twitter-image.png?498278222e7e54db">
   <h1 align="center">Freelancer's Pal</h1>
 </a>
 
