@@ -67,6 +67,21 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     .eq("projectID", id)
     .single();
 
+    // Add authorization check
+    const { data: adminCheck } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .single();
+
+    // Check if user has access to this project
+    const hasAccess = projects.userID === user.id || adminCheck;
+
+    if (!hasAccess) {
+        return redirect("/project");
+    }
+
     // Get links for this specific project
     const { data: links, error:linkError } = await supabase
     .from("links")
