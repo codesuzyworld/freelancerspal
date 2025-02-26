@@ -41,6 +41,7 @@ You can view a fully working demo at [freelancerspal-rzpb.vercel.app](freelancer
 5. You can now run the Next.js local development server:
 
    ```bash
+   npm run i
    npm run dev
    ```
 
