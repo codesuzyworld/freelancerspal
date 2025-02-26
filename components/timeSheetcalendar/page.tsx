@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/client";
 import { DataTable } from '@/app/(main)/project/[id]/linkTable/data-table';
 import { taskDayTableColumns } from '@/app/(main)/dashboard/taskDayTable/columns';
+import { redirect } from 'next/navigation';
 
 interface Task {
   taskID: string
@@ -30,9 +31,27 @@ export default function TimeSheetCalendar() {
   useEffect(() => {
     const fetchTasks = async () => {
       const supabase = createClient();
+          // Get auth in this page, if user isnt logged in, redirect to sign in page
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+      
+        if (!user) {
+          return redirect("/sign-in");
+        }
+
+        //Check if user is admin
+        const { data: adminCheck } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .single();
+
       const { data } = await supabase
         .from("tasks")
         .select()
+        .eq("userID", user.id)
         .order('taskDate', { ascending: false });
 
       if (data) {
