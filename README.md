@@ -19,13 +19,13 @@
 - Create Projects
 - Upload Files
 - Upload Links
-- Create timesheets and Timesheet Calendar
+- Create timesheets and view tasks through the Timesheet Calendar
 - Client Facing Page for Deliverables with Privacy Toggle
-- Timesheet Calendar
+- Light,Dark and Coffee Website Themes!
 
 ## Demo
 
-You can view a fully working demo at [[www.freelancerspal-rzpb.vercel.app](https://freelancerspal-rzpb.vercel.app)].
+You can view a fully working demo at [www.freelancerspal-rzpb.vercel.app](https://freelancerspal-rzpb.vercel.app).
 
 ## Clone and run locally
 
