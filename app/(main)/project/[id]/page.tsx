@@ -161,10 +161,10 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
           {/* Project Info*/}
 
 
-              <div className="flex flex-col justify-center items-center w-full gap-4">
+              <div className="flex flex-col justify-center items-center w-full gap-10">
                 {/* Project Name and Actions - Moved outside */}
                 <div className="w-full max-w-[1000px] flex flex-col md:flex-row justify-between items-center gap-4">
-                  <div className="w-full font-bold text-xl">{projects.projectName}</div>
+                  <div className="w-full font-bold text-xl text-center md:text-left">{projects.projectName}</div>
                   <div className="w-full flex flex-row gap-2 justify-end">
                     <EditProjectBtn projectID={projects.projectID}/> 
                     <DeleteProjectBtn projectID={projects.projectID}/>
@@ -195,7 +195,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                   <div className="flex flex-col flex-1 gap-4">
                     {/* Dates and Rate Per Hour*/}
                     <div className="w-full text-base text-projectcard-foreground flex flex-col md:flex-row gap-5 ">
-                      <p className="flex flex-col gap-1">
+                      <p className="flex flex-row md:flex-col items-center gap-1">
                         <span className="font-bold text-[0.8rem]">Project Date:</span> 
                         <span className="text-accent-foreground font-bold">
                           {new Date(projects.projectDate).toLocaleDateString('en-US', {
@@ -205,7 +205,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                         })}
                           </span>
                       </p>
-                      <p className="flex flex-col gap-1 rounded-lg">
+                      <p className="flex flex-row md:flex-col items-center gap-1">
                         <span className="font-bold text-[0.8rem]">Created On:</span> 
                         <span className="text-accent-foreground font-bold">{new Date(projects.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -214,13 +214,13 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                       })}
                       </span>
                       </p>
-                      <p className="flex flex-col gap-1">
+                      <p className="flex flex-row md:flex-col items-center gap-1">
                         <span className="font-bold text-[0.8rem]">Rate Per Hour:</span> 
                         <span className="text-accent-foreground font-bold">
                           ${projects.ratePerHour}
                         </span>
                       </p>
-                      <p className="flex flex-col gap-1">
+                      <p className="flex flex-row md:flex-col items-center gap-1">
                         <span className="font-bold text-[0.8rem]">Total Hours:</span> 
                         <span className="text-accent-foreground font-bold">
                           {totalHours} Hours
@@ -314,7 +314,7 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                     <AddTimeBtn projectID={projects.projectID}/>
                   </div>
 
-                  <div className="flex flex-row justify-between items-center gap-5">
+                  <div className="flex flex-col md:flex-row flex-wrap md:flex-nowrap items-center gap-5">
                     <div className="w-full flex flex-col bg-projectcard-primary px-10 py-3 rounded-lg">
                       <div className="font-bold text-base text-left">Total Hours Worked</div>
                       <div className="font-bold text-xl text-left">{totalHours} Hours</div>                                            
