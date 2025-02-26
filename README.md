@@ -25,7 +25,7 @@
 
 ## Demo
 
-You can view a fully working demo at [www.freelancerspal-rzpb.vercel.app](www.freelancerspal-rzpb.vercel.app).
+You can view a fully working demo at [[www.freelancerspal-rzpb.vercel.app](https://freelancerspal-rzpb.vercel.app)].
 
 ## Clone and run locally
 
