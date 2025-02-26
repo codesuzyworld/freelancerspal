@@ -35,7 +35,7 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
+  navMain: [    
     {
       title: "My Projects",
       url: "/project",
@@ -43,11 +43,11 @@ const data = {
       isActive: true,
     },
     {
-      title: "TimeSheets",
-      url: "/project",
+      title: "TimeSheet Calendar",
+      url: "/dashboard",
       icon: CalendarClock,
       isActive: true,
-    },
+    }
   ],
   navSecondary: [
     {
