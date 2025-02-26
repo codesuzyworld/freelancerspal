@@ -53,11 +53,18 @@ export default function TimeSheetCalendar() {
   //   { taskName: "Task 2", taskDate: "2025-02-25" }
   // ];
   const filterTasksForDate = (selectedDate: Date) => {
+    // Convert selected date to UTC
+    const utcDate = new Date(Date.UTC(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate()
+    ));
+
+    // Convert the calendar date to UTC format because of Supabase using UTC -> format: 2025-01-02T15:00:00.000Z
+    // toISOString, then split('T')[0] to get the date in the format of YYYY-MM-DD (2025-01-02) 
     const filteredTasks = tasks.filter(task => {
       const taskDate = new Date(task.taskDate);
-      // Add one day to the task date, I got no idea why its not showing up properly its so stupid 
-      taskDate.setDate(taskDate.getDate() + 1);
-      return taskDate.toDateString() === selectedDate.toDateString();
+      return taskDate.toISOString().split('T')[0] === utcDate.toISOString().split('T')[0];
     });
     setSelectedDateTasks(filteredTasks);
   };
@@ -71,10 +78,7 @@ export default function TimeSheetCalendar() {
   //If date doesnt match, then make a new array and push task name to it 
   //If date matches, then push task name to accumulator
   const tasksByDate = tasks.reduce((accumulator, currentTask) => {
-    const taskDate = new Date(currentTask.taskDate);
-      // Add one day to the task date, I got no idea why its not showing up properly its so stupid
-    taskDate.setDate(taskDate.getDate() + 1);
-    const date = taskDate.toDateString();
+    const date = new Date(currentTask.taskDate).toISOString().split('T')[0];
     if (!accumulator[date]) {
       accumulator[date] = [];
     }
@@ -112,7 +116,14 @@ export default function TimeSheetCalendar() {
           // Then it takes the tasksByDate object by date to get a tasks array
           // From there we can do tasks.length to get task count 
           DayContent: ({ date }) => {
-            const tasks = tasksByDate[date.toDateString()];
+            // Convert the calendar date to UTC format because of Supabase using UTC
+            const utcDate = new Date(Date.UTC(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate()
+            )).toISOString().split('T')[0];
+            
+            const tasks = tasksByDate[utcDate];
             return (
               <div className="flex flex-col items-center">
                 <div>{date.getDate()}</div>

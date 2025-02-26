@@ -16,6 +16,7 @@ export default function AddLinkBtn({ projectID }: AddLinkBtnProps) {
   return (
     <Button
       onClick={() => router.push(`/project/${projectID}/addlink`)}
+      className="bg-accent text-white hover:bg-accent/50"
     >
       <Plus className="h-4 w-4" />
       Add Link

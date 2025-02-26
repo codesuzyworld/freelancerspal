@@ -16,6 +16,7 @@ export default function AddTaskBtn({ projectID }: AddTaskBtnProps) {
   return (
     <Button
       onClick={() => router.push(`/project/${projectID}/addFile`)}
+      className="bg-accent text-white hover:bg-accent/50"
     >
       <Plus className="h-4 w-4" />
       Add File
