@@ -216,6 +216,7 @@ export default function AddFile({ params }: AddFileProps) {
 
                   <Input 
                     type="file" 
+                    className="bg-projectcard-primary"
                     onChange={(e) => setFile(e.target.files?.[0] || null)}
                   />
                   <Button type="submit">Upload File</Button>

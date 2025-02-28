@@ -31,6 +31,7 @@ export function LoginForm({
                   id="email"
                   name="email"
                   type="email"
+                  className="bg-sidebar-background"
                   placeholder="m@example.com"
                   required
                 />
@@ -45,7 +46,7 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" name="password" type="password" required />
+                <Input id="password" name="password" type="password" className="bg-sidebar-background" required />
               </div>
               <SubmitButton pendingText="Signing In..." formAction={signInAction}>
                 Sign in

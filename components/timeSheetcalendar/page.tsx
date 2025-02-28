@@ -31,33 +31,45 @@ export default function TimeSheetCalendar() {
   useEffect(() => {
     const fetchTasks = async () => {
       const supabase = createClient();
-          // Get auth in this page, if user isnt logged in, redirect to sign in page
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
       
-        if (!user) {
-          return redirect("/sign-in");
-        }
-
-        //Check if user is admin
-        const { data: adminCheck } = await supabase
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+    
+      if (!user) {
+        return redirect("/sign-in");
+      }
+     
+      //Check if user is admin
+      const { data: adminCheck } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
         .eq('role', 'admin')
         .single();
 
-      const { data } = await supabase
-        .from("tasks")
-        .select()
-        .eq("userID", user.id)
-        .order('taskDate', { ascending: false });
-
-      if (data) {
-        setTasks(data);
-        //Filter tasks for today's date so it shows immediately when page loads
-        filterTasksForDate(new Date());
+      // If user is admin (adminCheck exists and has admin role), fetch all tasks
+      if (adminCheck?.role === 'admin') {
+        const { data } = await supabase
+          .from("tasks")
+          .select()
+          .order('taskDate', { ascending: false });
+          
+        if (data) {
+          setTasks(data);
+          filterTasksForDate(new Date());
+        }
+      } else {
+        const { data } = await supabase
+          .from("tasks")
+          .select()
+          .eq("userID", user.id)
+          .order('taskDate', { ascending: false });
+          
+        if (data) {
+          setTasks(data);
+          filterTasksForDate(new Date());
+        }
       }
     };
 
