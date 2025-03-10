@@ -37,6 +37,8 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 
+import Fa6BrandsGithub from '~icons/fa6-brands/github'
+import Fa6BrandsSquareXTwitter from '~icons/fa6-brands/square-x-twitter'
 
 //the search params will show the tab that the user is currently on
 interface ProjectPageProps {
@@ -277,27 +279,33 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
 
               {/* Deliverables*/}
               <TabsContent value="deliverables" className="w-full">
-                <div className="flex flex-col w-full max-w-[1000px] mx-auto">
-                  <div className="flex flex-row justify-between items-center gap-7">
-                    <div className="font-bold text-xl mb-2">Links</div>
-                    <AddLinkBtn projectID={projects.projectID}/>
+                <div className="flex flex-col w-full max-w-[1000px] mx-auto gap-5">
+
+                  {/* This is the links Table */}
+                  <div>
+                    <div className="flex flex-row justify-between items-center gap-7">
+                      <div className="font-bold text-xl mb-2">Links</div>
+                      <AddLinkBtn projectID={projects.projectID}/>
+                    </div>
+                    {/* Show array in its purest form, for testing purposes lol
+                        <pre>{JSON.stringify(links, null, 2)}</pre>
+                    */}
+
+                    {/* Check if tehre's links, if not then show no links found msg */}        
+                    {links.length > 0 ? (
+                      <div className="p-2">
+                        <DataTable columns={linkcolumns} data={links} />
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center gap-5 p-10 mt-3 bg-projectcard-primary rounded-lg">
+                        <div className="text-center">No links found for this project. Add one!</div>
+                        <AddLinkBtn projectID={projects.projectID} />
+                      </div>
+                    )}                    
                   </div>
-                  {/* Show array in its purest form, for testing purposes lol
-                       <pre>{JSON.stringify(links, null, 2)}</pre>
-                  */}
 
-                  {/* Check if tehre's links, if not then show no links found msg */}        
-                  {links.length > 0 ? (
-                    <div className="p-2">
-                      <DataTable columns={linkcolumns} data={links} />
-                    </div>
-                  ) : (
-                    <div>
-                      <div>No links found for this project. Add one!</div>
-                      <AddLinkBtn projectID={projects.projectID} />
-                    </div>
-                  )}
-
+                  {/* This is the files Table */}
+                  <div>
                   <div className="flex flex-row justify-between items-center gap-7">
                     <div className="font-bold text-xl mb-2">Files</div>
                     <AddFileBtn projectID={projects.projectID}/>
@@ -311,12 +319,14 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                       <DataTable columns={filecolumns} data={files} />
                     </div>
                   ) : (
-                    <div>
-                      <div>No files found for this project. Add one!</div>
+                    <div className="flex flex-col items-center justify-center gap-5 p-10 mt-3 bg-projectcard-primary rounded-lg">
+                      <div className="text-center">No files found for this project. Add one!</div>
                       <AddFileBtn projectID={projects.projectID} />
                     </div>
                   )}
-                </div>
+                </div>                    
+                  </div>
+
               </TabsContent>
 
 
@@ -331,18 +341,18 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
 
                   <div className="flex flex-col md:flex-row flex-wrap md:flex-nowrap items-center gap-5">
                     <div className="w-full flex flex-col bg-projectcard-primary px-10 py-3 rounded-lg">
-                      <div className="font-bold text-base text-left">Total Hours Worked</div>
-                      <div className="font-bold text-xl text-left">{totalHours} Hours</div>                                            
+                      <div className="font-bold text-base md:text-left text-center whitespace-nowrap">Total Hours Worked</div>
+                      <div className="font-bold text-xl md:text-left text-center whitespace-nowrap">{totalHours} Hours</div>                                            
                     </div>
 
                     <div className="w-full flex flex-col bg-projectcard-primary px-10 py-3 rounded-lg">
-                      <div className="font-bold text-base text-left">Rate Per Hour</div>
-                      <div className="font-bold text-xl text-left">${projects.ratePerHour}</div>                                            
+                      <div className="font-bold text-base md:text-left text-center whitespace-nowrap">Rate Per Hour</div>
+                      <div className="font-bold text-xl md:text-left text-center">${projects.ratePerHour}</div>                                            
                     </div>
 
                     <div className="w-full flex flex-col bg-projectcard-primary px-10 py-3 rounded-lg">
-                      <div className="font-bold text-base text-left">Total Amount</div>
-                      <div className="font-bold text-xl text-left">${totalAmount}</div>                                            
+                      <div className="font-bold text-base md:text-left text-center whitespace-nowrap">Total Amount</div>
+                      <div className="font-bold text-xl md:text-left text-center">${totalAmount}</div>                                            
                     </div>
 
                   </div>
@@ -354,8 +364,8 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                       />
                     </div>
                   ) : (
-                    <div>
-                      <div>No Tasks found for this Timesheet. Add one!</div>
+                    <div className="flex flex-col items-center justify-center gap-5 p-10 mt-3 bg-projectcard-primary rounded-lg">
+                      <div className="text-center">No Tasks found for this Timesheet. Add one!</div>
                       <AddTimeBtn projectID={projects.projectID} />
                     </div>
                   )}
