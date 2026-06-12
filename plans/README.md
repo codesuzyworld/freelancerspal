@@ -18,6 +18,7 @@ Execute top to bottom unless a dependency note in the next section says otherwis
 | 007  | Standardize timesheet date handling on local-calendar YYYY-MM-DD | P2 | M | 001 | TODO |
 | 008  | Spike — design an invoice/CSV export for project totals | P3 | M | 001 | TODO |
 | 009  | Either finish or remove the "Recent Projects" sidebar feature | P3 | S–M | 001 | TODO |
+| 010  | Token-gated access for the client portal | P2 | M | 001, 003 | TODO |
 
 Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED` (one-line reason) | `REJECTED` (one-line rationale — finding fixed independently or approach abandoned)
 
