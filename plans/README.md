@@ -10,7 +10,7 @@ Execute top to bottom unless a dependency note in the next section says otherwis
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
 | 001  | Add `lint`, `typecheck`, and `format` npm scripts | P1 | S | — | DONE (a917b7a) |
-| 002  | Patch the critical Next.js RCE CVE (GHSA-9qr9-h5gf-34mp) | P0 | S | — | TODO |
+| 002  | Patch the critical Next.js RCE CVE (GHSA-9qr9-h5gf-34mp) | P0 | S | — | DONE (follow-up needed: 22 newer Next CVEs disclosed post-plan; see notes) |
 | 003  | Fix null-deref crashes after `.single()` on project lookups | P1 | M | 001 | TODO |
 | 004  | Design spike — RLS posture & server-action migration for mutations | P1 | L | 001, 003 | TODO |
 | 005  | Deduplicate the 12 near-identical CRUD form pages | P2 | L | 001, 003, 004 | TODO |
