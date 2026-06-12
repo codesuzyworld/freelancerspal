@@ -70,11 +70,20 @@ export default async function Projects({
 
     // If the user is not an admin, filter to only show user's projects
     if (!adminCheck) {
-        const { data: userProjects } = await supabase
+        let userQuery = supabase
             .from("projects")
             .select()
-            .eq("userID", user.id)
-            .order('projectDate', { ascending: false });
+            .eq("userID", user.id);
+
+        if (params.query) {
+            userQuery = userQuery.textSearch(
+                'project_search',
+                `${params.query}:*`,
+                { config: 'english', type: 'websearch' }
+            );
+        }
+
+        const { data: userProjects } = await userQuery.order('projectDate', { ascending: false });
 
             
         return (
@@ -107,6 +116,9 @@ export default async function Projects({
                           </Breadcrumb>
                         </div>
                       </header>
+                      <div className="w-full">
+                        <ProjectSearchBar placeholder="Search projects by name and tag" />
+                      </div>
                       <div className="flex flex-1 flex-row flex-wrap gap-4 p-4 pt-0">
                         <div className="min-h-[100vh] w-full p-4">
                             <ProjectCard projects={userProjects || []} />
