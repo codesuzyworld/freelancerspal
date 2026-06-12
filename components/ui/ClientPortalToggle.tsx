@@ -5,7 +5,8 @@ import { Switch } from "@/components/ui/switch";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Copy, RefreshCw } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Copy, RefreshCw, Share2 } from "lucide-react";
 import { setClientPortalAccess } from "@/app/(main)/project/[id]/actions";
 
 interface ClientPortalToggleProps {
@@ -21,8 +22,13 @@ export function ClientPortalToggle({
 }: ClientPortalToggleProps) {
   const [isPublic, setIsPublic] = React.useState(initialState);
   const [token, setToken] = React.useState<string | null>(initialToken);
+  const [origin, setOrigin] = React.useState<string | null>(null);
   const [isPending, startTransition] = React.useTransition();
   const supabase = createClient();
+
+  React.useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   // Keep an initial fetch in case the parent didn't pass props (back-compat).
   React.useEffect(() => {
@@ -66,8 +72,8 @@ export function ClientPortalToggle({
   const handleRegenerate = () => callAction(true);
 
   const shareUrl =
-    typeof window !== "undefined" && isPublic && token
-      ? `${window.location.origin}/clientPortal/${projectID}?token=${token}`
+    origin && isPublic && token
+      ? `${origin}/clientPortal/${projectID}?token=${token}`
       : null;
 
   const handleCopy = async () => {
@@ -77,42 +83,65 @@ export function ClientPortalToggle({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <Switch checked={isPublic} onCheckedChange={handleToggle} disabled={isPending} />
-        <span className="text-sm text-muted-foreground">
-          {isPublic ? "Public" : "Private"}
-        </span>
-      </div>
-
-      {isPublic && token && (
-        <div className="flex flex-col gap-1 max-w-full">
-          <div className="text-xs text-muted-foreground">Shareable link</div>
-          <div className="flex items-center gap-2 max-w-full">
-            <code className="text-xs bg-muted px-2 py-1 rounded truncate flex-1" title={shareUrl ?? ""}>
-              {shareUrl ?? "Loading..."}
-            </code>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={handleCopy}
-              disabled={!shareUrl || isPending}
-              title="Copy link"
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={handleRegenerate}
-              disabled={isPending}
-              title="Regenerate link (invalidates the current URL)"
-            >
-              <RefreshCw className="h-4 w-4" />
-            </Button>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button className="bg-accent text-white hover:bg-accent/50">
+          <Share2 className="h-4 w-4" />
+          <span className="hidden md:inline">Share</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-96">
+        <div className="flex flex-col gap-3">
+          <div>
+            <div className="text-sm font-medium">Client portal access</div>
+            <div className="text-xs text-muted-foreground">
+              Make this project public to generate a shareable link.
+            </div>
           </div>
+
+          <div className="flex items-center justify-between rounded-md border border-border p-2">
+            <span className="text-sm">{isPublic ? "Public" : "Private"}</span>
+            <Switch
+              checked={isPublic}
+              onCheckedChange={handleToggle}
+              disabled={isPending}
+            />
+          </div>
+
+          {isPublic && token && (
+            <>
+              <div className="flex items-center gap-2">
+                <code
+                  className="text-xs bg-muted px-2 py-2 rounded truncate flex-1"
+                  title={shareUrl ?? ""}
+                >
+                  {shareUrl ?? "Loading…"}
+                </code>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={handleCopy}
+                  disabled={!shareUrl || isPending}
+                  title="Copy link"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={handleRegenerate}
+                disabled={isPending}
+                className="gap-2 self-start"
+                title="Regenerate link (invalidates the current URL)"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Regenerate link
+              </Button>
+            </>
+          )}
         </div>
-      )}
-    </div>
+      </PopoverContent>
+    </Popover>
   );
 }

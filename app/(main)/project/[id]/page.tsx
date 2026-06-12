@@ -6,9 +6,9 @@ import AddTimeBtn from "@/components/addTime/addTimeBtn";
 import AddFileBtn from "@/components/addFile/addFileBtn";
 import EditProjectBtn from "@/components/editProject/editProjectBtn";
 import DeleteProjectBtn from "@/components/deleteProject/deleteProjectBtn";
-import AddCoverImageBtn from "@/components/addCoverImage/addCoverImageBtn";
 import ClientPortalBtn from "@/components/clientPortal/clientPortalBtn";
 import { ClientPortalToggle } from "@/components/ui/ClientPortalToggle";
+import { Image as ImageIcon } from "lucide-react";
 //Importing Datatable and columns
 import { DataTable } from "./linkTable/data-table";
 import { linkcolumns } from "./linkTable/columns";
@@ -182,10 +182,11 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                 <div className="w-full max-w-[1000px] flex flex-col md:flex-row justify-between items-center gap-4">
                   <div className="w-full font-bold text-xl text-center md:text-left">{projects.projectName}</div>
                   <div className="w-full flex flex-row gap-2 justify-end">
-                    <EditProjectBtn projectID={projects.projectID}/> 
+                    <EditProjectBtn projectID={projects.projectID}/>
                     <DeleteProjectBtn projectID={projects.projectID}/>
-                    <AddCoverImageBtn projectID={projects.projectID}/>                                                  
-                    <ClientPortalBtn projectID={projects.projectID} token={projects.clientPortalToken ?? null}/>
+                    {projects.clientPortal && (
+                      <ClientPortalBtn projectID={projects.projectID} token={projects.clientPortalToken ?? null}/>
+                    )}
                     <ClientPortalToggle
                       projectID={projects.projectID}
                       initialState={!!projects.clientPortal}
@@ -197,10 +198,14 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                 {/* Project Details Card */}
                 <div className="w-full max-w-[1000px] flex flex-col md:flex-row gap-4 bg-projectcard-primary rounded-2xl p-4 md:p-10">
                   {/* Cover Image */}
-                  <div className="w-full md:w-1/3 h-[200px] md:[300px] rounded-3xl overflow-hidden">
+                  <Link
+                    href={`/project/${projects.projectID}/addCoverImage`}
+                    aria-label={projects.projectPhoto ? "Change cover image" : "Add cover image"}
+                    className="relative group block w-full md:w-1/3 h-[200px] md:[300px] rounded-3xl overflow-hidden"
+                  >
                     {projects.projectPhoto ? (
-                      <img 
-                        src={projects.projectPhoto} 
+                      <img
+                        src={projects.projectPhoto}
                         alt={`${projects.projectName} cover`}
                         className="w-full h-full object-cover"
                       />
@@ -209,7 +214,11 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                         No Image
                       </div>
                     )}
-                  </div>
+                    <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 text-white text-sm font-medium opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity">
+                      <ImageIcon className="h-5 w-5" />
+                      {projects.projectPhoto ? "Change cover" : "Add cover image"}
+                    </div>
+                  </Link>
 
                   {/* Right side - Project Details */}
                   <div className="flex flex-col flex-1 gap-4">
