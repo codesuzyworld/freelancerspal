@@ -2,9 +2,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar"
 import { SidebarInset } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function MainLayout({
@@ -25,7 +23,7 @@ export default function MainLayout({
                 <ThemeSwitcher />
               </div>
               <div className="flex flex-row justify-between">
-              {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}                
+              <HeaderAuth />
               </div>
             </div>
           </header>

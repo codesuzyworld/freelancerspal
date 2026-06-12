@@ -29,19 +29,19 @@ You can view a fully working demo at [www.freelancerspal-rzpb.vercel.app](https:
 
 ## Clone and run locally
 
-1. Rename `.env.example` to `.env.local` and update the following:
+1. Copy `.env.example` to `.env.local` and update the following:
 
    ```
    NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
    NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
    ```
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be obtained by contacting CodeSuzy
+   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be obtained from your Supabase project dashboard at https://supabase.com/dashboard → Project Settings → API. See `.env.example` for the format.
 
 5. You can now run the Next.js local development server:
 
    ```bash
-   npm run i
+   npm install
    npm run dev
    ```
 

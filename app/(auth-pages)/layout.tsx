@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 
@@ -19,7 +17,7 @@ export default function AuthLayout({
             <Link href={"/project"} className="text-s md:text-xl font-black">Freelancer's Pal</Link>
             <ThemeSwitcher />    
           </div>
-          {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+          <HeaderAuth />
         </div>
       </header>
 

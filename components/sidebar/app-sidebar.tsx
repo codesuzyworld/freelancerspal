@@ -12,7 +12,6 @@ import Fa6BrandsSquareXTwitter from '~icons/fa6-brands/square-x-twitter'
 import Fa6BrandsGithub from '~icons/fa6-brands/github'
 
 import { NavMain } from "@/components/sidebar/nav-main"
-import { NavProjects } from "@/components/sidebar/nav-projects"
 import { NavSecondary } from "@/components/sidebar/nav-secondary"
 import { NavUser } from "./nav-user"
 import {
@@ -26,8 +25,6 @@ import {
 } from "@/components/ui/sidebar"
 
 import { ThemeSwitcher } from "@/components/theme-switcher"
-import { useState } from "react"
-import { createClient } from "@/utils/supabase/client"
 
 const data = {
   user: {
@@ -61,15 +58,9 @@ const data = {
       icon: Fa6BrandsSquareXTwitter,
     },
   ],
-  projects: [
-
-  ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [recentProjects, setRecentProjects] = useState([]);
-  const supabase = createClient();
-  
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -94,7 +85,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
