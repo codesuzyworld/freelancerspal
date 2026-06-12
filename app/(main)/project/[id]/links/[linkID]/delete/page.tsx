@@ -52,11 +52,21 @@ export default function DeleteTask({ params }: DeleteLinkProps) {
     // Fetch project name
     useEffect(() => {
         async function getProject() {
-            const { data: project } = await supabase
+            const { data: project, error } = await supabase
                 .from("projects")
                 .select()
                 .eq("projectID", id)
-                .single();          
+                .single();
+
+            if (error || !project) {
+                toast({
+                    title: "Error",
+                    description: "Failed to load project",
+                    variant: "destructive",
+                });
+                return;
+            }
+
             setProjectName(project.projectName);
         }
         getProject();
@@ -65,14 +75,22 @@ export default function DeleteTask({ params }: DeleteLinkProps) {
     // Fetch task name
     useEffect(() => {
         async function getLink() {
-            const { data: link } = await supabase
+            const { data: link, error } = await supabase
                 .from("links")
                 .select()
                 .eq("linkID", linkID)
-                .single();          
-            if (link) {
-                setLinkName(link.linkName);
+                .single();
+
+            if (error || !link) {
+                toast({
+                    title: "Error",
+                    description: "Failed to load link",
+                    variant: "destructive",
+                });
+                return;
             }
+
+            setLinkName(link.linkName);
         }
         getLink();
     }, [linkID]);

@@ -51,11 +51,21 @@ export default function DeleteTask({ params }: DeleteTaskProps) {
     // Fetch project name
     useEffect(() => {
         async function getProject() {
-            const { data: project } = await supabase
+            const { data: project, error } = await supabase
                 .from("projects")
                 .select()
                 .eq("projectID", id)
-                .single();          
+                .single();
+
+            if (error || !project) {
+                toast({
+                    title: "Error",
+                    description: "Failed to load project",
+                    variant: "destructive",
+                });
+                return;
+            }
+
             setProjectName(project.projectName);
         }
         getProject();
@@ -64,14 +74,22 @@ export default function DeleteTask({ params }: DeleteTaskProps) {
     // Fetch task name
     useEffect(() => {
         async function getTask() {
-            const { data: task } = await supabase
+            const { data: task, error } = await supabase
                 .from("tasks")
                 .select()
                 .eq("taskID", taskID)
-                .single();          
-            if (task) {
-                setTaskName(task.taskName);
+                .single();
+
+            if (error || !task) {
+                toast({
+                    title: "Error",
+                    description: "Failed to load task",
+                    variant: "destructive",
+                });
+                return;
             }
+
+            setTaskName(task.taskName);
         }
         getTask();
     }, [taskID]);

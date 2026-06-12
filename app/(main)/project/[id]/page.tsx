@@ -69,6 +69,10 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     .eq("projectID", id)
     .single();
 
+    if (projectError || !projects) {
+        return redirect("/project");
+    }
+
     // Add authorization check
     const { data: adminCheck } = await supabase
         .from('user_roles')
@@ -120,11 +124,6 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
     const totalAmount = totalHours * projects.ratePerHour;
 
     //Error Handling
-
-    if (projectError) {
-      console.error("Error fetching project:", projectError);
-      return <div>Error loading project</div>;
-    }
 
     if (linkError) {
         console.error("Error fetching links:", linkError);

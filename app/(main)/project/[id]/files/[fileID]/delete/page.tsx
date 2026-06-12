@@ -59,35 +59,51 @@ export default function AddFile({ params }: EditFileProps) {
     // Since this is a client side component, we gotta use useEffect to fetch the project name after component mounts, cuz we cant use async await
     useEffect(() => {
       async function getProject() {
-          const { data: project } = await supabase
+          const { data: project, error } = await supabase
               .from("projects")
               .select()
               .eq("projectID", id)
               .single();
-          
+
+          if (error || !project) {
+              toast({
+                  title: "Error",
+                  description: "Failed to load project",
+                  variant: "destructive",
+              });
+              return;
+          }
+
           // Let's set the project name after getting it from supabase
           setProjectName(project.projectName);
-          
+
       }
       // call the function
       getProject();
   }, [id]);
-  
+
   // Add state for filename
   const [fileName, setFileName] = useState<string>('');
 
   // Add to existing useEffect or create a new one
   useEffect(() => {
     async function getCurrentFile() {
-      const { data: currentFile } = await supabase
+      const { data: currentFile, error } = await supabase
         .from('files')
         .select('fileName')
         .eq('fileID', fileID)
         .single();
-      
-      if (currentFile) {
-        setFileName(currentFile.fileName);
+
+      if (error || !currentFile) {
+        toast({
+          title: "Error",
+          description: "Failed to load file",
+          variant: "destructive",
+        });
+        return;
       }
+
+      setFileName(currentFile.fileName);
     }
     getCurrentFile();
   }, [fileID]);

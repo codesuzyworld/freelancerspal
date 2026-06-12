@@ -70,11 +70,21 @@ export default function AddLink({ params }: EditLinkProps) {
     // Since this is a client side component, we gotta use useEffect to fetch the project name after component mounts, cuz we cant use async await
     useEffect(() => {
         async function getProject() {
-            const { data: project } = await supabase
+            const { data: project, error } = await supabase
                 .from("projects")
                 .select()
                 .eq("projectID", id)
-                .single();          
+                .single();
+
+            if (error || !project) {
+                toast({
+                    title: "Error",
+                    description: "Failed to load project",
+                    variant: "destructive",
+                });
+                return;
+            }
+
             // Let's set the project name after getting it from supabase
             setProjectName(project.projectName);
         }
@@ -93,7 +103,7 @@ export default function AddLink({ params }: EditLinkProps) {
         },
     });
 
-    // Fetch the task data 
+    // Fetch the task data
     useEffect(() => {
         async function fetchTask() {
             const { data: task, error } = await supabase
@@ -101,9 +111,9 @@ export default function AddLink({ params }: EditLinkProps) {
                 .select()
                 .eq('taskID', taskID)
                 .single();
-            
 
-            if (error) {
+
+            if (error || !task) {
                 toast({
                     title: "Error",
                     description: "Failed to fetch link",
@@ -112,15 +122,12 @@ export default function AddLink({ params }: EditLinkProps) {
                 return;
             }
 
-            // Only reset form if we have link data
-            if (task) {
-                form.reset({
-                    taskName: task.taskName,
-                    taskDate: new Date(task.taskDate + 'T00:00:00'),
-                    hourSpent: task.hourSpent,
-                    taskDesc: task.taskDesc
-                });
-            }
+            form.reset({
+                taskName: task.taskName,
+                taskDate: new Date(task.taskDate + 'T00:00:00'),
+                hourSpent: task.hourSpent,
+                taskDesc: task.taskDesc
+            });
         }
         fetchTask();
     }, [taskID, form]);

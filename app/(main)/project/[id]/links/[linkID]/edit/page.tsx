@@ -64,16 +64,25 @@ export default function AddLink({ params }: EditLinkProps) {
     // Since this is a client side component, we gotta use useEffect to fetch the project name after component mounts, cuz we cant use async await
     useEffect(() => {
         async function getProject() {
-            const { data: project } = await supabase
+            const { data: project, error } = await supabase
                 .from("projects")
                 .select()
                 .eq("projectID", id)
                 .single();
-            
+
+
+            if (error || !project) {
+                toast({
+                    title: "Error",
+                    description: "Failed to load project",
+                    variant: "destructive",
+                });
+                return;
+            }
 
             // Let's set the project name after getting it from supabase
             setProjectName(project.projectName);
-            
+
         }
         // call the function
         getProject();
@@ -88,7 +97,7 @@ export default function AddLink({ params }: EditLinkProps) {
         },
     });
 
-    // Fetch the link data 
+    // Fetch the link data
     useEffect(() => {
         async function fetchLink() {
             const { data: link, error } = await supabase
@@ -96,9 +105,9 @@ export default function AddLink({ params }: EditLinkProps) {
                 .select()
                 .eq('linkID', linkID)
                 .single();
-            
 
-            if (error) {
+
+            if (error || !link) {
                 toast({
                     title: "Error",
                     description: "Failed to fetch link",
@@ -107,13 +116,10 @@ export default function AddLink({ params }: EditLinkProps) {
                 return;
             }
 
-            // Only reset form if we have link data
-            if (link) {
-                form.reset({
-                    linkName: link.linkName,
-                    link: link.link,
-                });
-            }
+            form.reset({
+                linkName: link.linkName,
+                link: link.link,
+            });
         }
 
         fetchLink();

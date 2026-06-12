@@ -74,15 +74,24 @@ export default function UpdateProject({ params }: UpdateProjectProps) {
     // Since this is a client side component, we gotta use useEffect to fetch the project name after component mounts, cuz we cant use async await
     useEffect(() => {
         async function getProject() {
-            const { data: project } = await supabase
+            const { data: project, error } = await supabase
                 .from("projects")
                 .select()
                 .eq("projectID", id)
                 .single();
-            
+
+            if (error || !project) {
+                toast({
+                    title: "Error",
+                    description: "Failed to load project",
+                    variant: "destructive",
+                });
+                return;
+            }
+
             // Let's set the project name after getting it from supabase
             setProjectName(project.projectName);
-            
+
         }
         // call the function
         getProject();
@@ -105,14 +114,14 @@ export default function UpdateProject({ params }: UpdateProjectProps) {
     useEffect(() => {
         async function fetchProject() {
 
-            //Fetch project details 
+            //Fetch project details
             const { data: project, error } = await supabase
                 .from("projects")
                 .select()
                 .eq("projectID", id)
                 .single();
-            
-            if (error) {
+
+            if (error || !project) {
                 toast({
                     title: "Error",
                     description: "Failed to fetch project details",
