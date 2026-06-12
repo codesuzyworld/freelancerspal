@@ -40,6 +40,7 @@ import {
   } from "@/components/ui/sidebar"
 import { useState, useEffect } from 'react';
 import { Textarea } from "@/components/ui/textarea";
+import { formatLocalDate, parseLocalDate } from "@/lib/date";
 
 //Creating a Zod form Schema for adding project
 //This is for form validation, and will display the error message easily :D 
@@ -124,7 +125,7 @@ export default function AddLink({ params }: EditLinkProps) {
 
             form.reset({
                 taskName: task.taskName,
-                taskDate: new Date(task.taskDate + 'T00:00:00'),
+                taskDate: parseLocalDate(task.taskDate),
                 hourSpent: task.hourSpent,
                 taskDesc: task.taskDesc
             });
@@ -153,7 +154,7 @@ export default function AddLink({ params }: EditLinkProps) {
                     userID: user.id,
                     projectID: id,
                     taskName: values.taskName,
-                    taskDate: values.taskDate,
+                    taskDate: formatLocalDate(values.taskDate),
                     hourSpent: values.hourSpent,
                     taskDesc: values.taskDesc,
                 }])

@@ -5,13 +5,14 @@ import { Calendar } from "@/components/ui/standaloneCalendar";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/client";
 import { DataTable } from '@/app/(main)/project/[id]/linkTable/data-table';
-import { taskDayTableColumns } from '@/app/(main)/dashboard/taskDayTable/columns';
+import { taskDayTableColumns, type TaskDayTable as TaskDayTableRow } from '@/app/(main)/dashboard/taskDayTable/columns';
 import { redirect } from 'next/navigation';
+import { formatLocalDate } from "@/lib/date";
 
 interface Task {
   taskID: string
   taskName: string
-  taskDate: Date
+  taskDate: string   // YYYY-MM-DD (column type: date), or YYYY-MM-DDTHH:MM:SS for legacy rows
   hourSpent: number
   taskDesc: string
   projectID: string
@@ -84,19 +85,11 @@ export default function TimeSheetCalendar() {
   //   { taskName: "Task 2", taskDate: "2025-02-25" }
   // ];
   const filterTasksForDate = (selectedDate: Date) => {
-    // Convert selected date to UTC
-    const utcDate = new Date(Date.UTC(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      selectedDate.getDate()
-    ));
-
-    // Convert the calendar date to UTC format because of Supabase using UTC -> format: 2025-01-02T15:00:00.000Z
-    // toISOString, then split('T')[0] to get the date in the format of YYYY-MM-DD (2025-01-02) 
-    const filteredTasks = tasks.filter(task => {
-      const taskDate = new Date(task.taskDate);
-      return taskDate.toISOString().split('T')[0] === utcDate.toISOString().split('T')[0];
-    });
+    // Compare YYYY-MM-DD strings directly. taskDate is stored as a
+    // local-calendar date string; the leading 10 chars cover both
+    // pure-date and legacy timestamp formats.
+    const selectedYmd = formatLocalDate(selectedDate);
+    const filteredTasks = tasks.filter(task => task.taskDate.slice(0, 10) === selectedYmd);
     setSelectedDateTasks(filteredTasks);
   };
 
@@ -109,7 +102,7 @@ export default function TimeSheetCalendar() {
   //If date doesnt match, then make a new array and push task name to it 
   //If date matches, then push task name to accumulator
   const tasksByDate = tasks.reduce((accumulator, currentTask) => {
-    const date = new Date(currentTask.taskDate).toISOString().split('T')[0];
+    const date = currentTask.taskDate.slice(0, 10);
     if (!accumulator[date]) {
       accumulator[date] = [];
     }
@@ -137,7 +130,7 @@ export default function TimeSheetCalendar() {
           //Custom Modifiers for React Daypicker: https://daypicker.dev/guides/custom-modifiers 
           // Check if there are any tasks for the day
           hasTask: (date) => {
-            return tasksByDate[date.toDateString()] !== undefined;
+            return tasksByDate[formatLocalDate(date)] !== undefined;
           }
         }}
         components={{
@@ -147,14 +140,8 @@ export default function TimeSheetCalendar() {
           // Then it takes the tasksByDate object by date to get a tasks array
           // From there we can do tasks.length to get task count 
           DayContent: ({ date }) => {
-            // Convert the calendar date to UTC format because of Supabase using UTC
-            const utcDate = new Date(Date.UTC(
-              date.getFullYear(),
-              date.getMonth(),
-              date.getDate()
-            )).toISOString().split('T')[0];
-            
-            const tasks = tasksByDate[utcDate];
+            const ymd = formatLocalDate(date);
+            const tasks = tasksByDate[ymd];
             return (
               <div className="flex flex-col items-center">
                 <div>{date.getDate()}</div>
@@ -178,7 +165,12 @@ export default function TimeSheetCalendar() {
         </h3>
         {selectedDateTasks.length > 0 ? (
           <div className="p-2">
-            <DataTable columns={taskDayTableColumns} data={selectedDateTasks} />
+            {/*
+              Cast: TaskDayTable type declares taskDate: Date but the runtime
+              value from Supabase is a string. Plan 007 corrects the local
+              Task type; the dashboard columns module is out of scope.
+            */}
+            <DataTable columns={taskDayTableColumns} data={selectedDateTasks as unknown as TaskDayTableRow[]} />
           </div>
         ) : (
           <div>

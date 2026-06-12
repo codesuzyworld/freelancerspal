@@ -40,6 +40,7 @@ import {
   } from "@/components/ui/sidebar"
 import { useState, useEffect } from 'react';
 import { Textarea } from "@/components/ui/textarea";
+import { formatLocalDate } from "@/lib/date";
 
 
 const formSchema = z.object({
@@ -126,7 +127,7 @@ export default function AddTaskForm({ params }: AddTaskProps) {
                   userID: user.id,
                   projectID: id,
                   taskName: values.taskName,
-                  taskDate: values.taskDate,
+                  taskDate: formatLocalDate(values.taskDate),
                   hourSpent: values.hourSpent,
                   taskDesc: values.taskDesc,
               }])
