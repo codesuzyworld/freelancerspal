@@ -1,72 +1,118 @@
-'use client'
+"use client";
 
-import * as React from "react"
-import { Switch } from "@/components/ui/switch"
-import { createClient } from "@/utils/supabase/client"
-import { toast } from "@/hooks/use-toast"
+import * as React from "react";
+import { Switch } from "@/components/ui/switch";
+import { createClient } from "@/utils/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Copy, RefreshCw } from "lucide-react";
+import { setClientPortalAccess } from "@/app/(main)/project/[id]/actions";
 
-//Props Interface
 interface ClientPortalToggleProps {
   projectID: string;
   initialState?: boolean;
+  initialToken?: string | null;
 }
 
-export function ClientPortalToggle({ projectID, initialState = false }: ClientPortalToggleProps) {
-  const [isPublic, setIsPublic] = React.useState(initialState)
-  const supabase = createClient()
+export function ClientPortalToggle({
+  projectID,
+  initialState = false,
+  initialToken = null,
+}: ClientPortalToggleProps) {
+  const [isPublic, setIsPublic] = React.useState(initialState);
+  const [token, setToken] = React.useState<string | null>(initialToken);
+  const [isPending, startTransition] = React.useTransition();
+  const supabase = createClient();
 
-  // Fetch initial state when component mounts
+  // Keep an initial fetch in case the parent didn't pass props (back-compat).
   React.useEffect(() => {
+    if (initialToken !== null || initialState) return;
+    let cancelled = false;
     async function fetchInitialState() {
       const { data, error } = await supabase
-        .from('projects')
-        .select('clientPortal')
-        .eq('projectID', projectID)
-        .single()
-      
+        .from("projects")
+        .select("clientPortal, clientPortalToken")
+        .eq("projectID", projectID)
+        .single();
+      if (cancelled) return;
       if (!error && data) {
-        setIsPublic(data.clientPortal)
+        setIsPublic(!!data.clientPortal);
+        setToken(data.clientPortalToken ?? null);
       }
     }
-    
-    fetchInitialState()
-  }, [projectID])
+    fetchInitialState();
+    return () => { cancelled = true; };
+  }, [projectID]);
 
-  const handleToggle = async () => {
-    // Toggle the state
-    const projectVisibility = !isPublic
-
-    // Update database
-    const { error } = await supabase
-      .from('projects')
-      .update({ clientPortal: projectVisibility })
-      .eq('projectID', projectID)
-
-    if (error) {
+  const callAction = (enabled: boolean) => {
+    startTransition(async () => {
+      const result = await setClientPortalAccess(projectID, enabled);
+      if (!result.ok) {
+        toast({ title: "Error", description: result.error, variant: "destructive" });
+        return;
+      }
+      setIsPublic(result.clientPortal);
+      setToken(result.token);
       toast({
-        title: "Error",
-        description: "Failed to update client portal status",
-        variant: "destructive"
-      })
-      return
-    }
+        title: "Success",
+        description: result.clientPortal
+          ? "Client portal enabled with a fresh link"
+          : "Client portal disabled",
+      });
+    });
+  };
 
-    setIsPublic(projectVisibility)
-    toast({
-      title: "Success",
-      description: `Client portal ${projectVisibility ? 'public' : 'private'}`,
-    })
-  }
+  const handleToggle = () => callAction(!isPublic);
+  const handleRegenerate = () => callAction(true);
+
+  const shareUrl =
+    typeof window !== "undefined" && isPublic && token
+      ? `${window.location.origin}/clientPortal/${projectID}?token=${token}`
+      : null;
+
+  const handleCopy = async () => {
+    if (!shareUrl) return;
+    await navigator.clipboard.writeText(shareUrl);
+    toast({ title: "Copied", description: "Client portal link copied to clipboard" });
+  };
 
   return (
-    <div className="flex items-center gap-2">
-      <Switch
-        checked={isPublic}
-        onCheckedChange={handleToggle}
-      />
-      <span className="text-sm text-muted-foreground">
-        {isPublic ? 'Public' : 'Private'}
-      </span>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <Switch checked={isPublic} onCheckedChange={handleToggle} disabled={isPending} />
+        <span className="text-sm text-muted-foreground">
+          {isPublic ? "Public" : "Private"}
+        </span>
+      </div>
+
+      {isPublic && token && (
+        <div className="flex flex-col gap-1 max-w-full">
+          <div className="text-xs text-muted-foreground">Shareable link</div>
+          <div className="flex items-center gap-2 max-w-full">
+            <code className="text-xs bg-muted px-2 py-1 rounded truncate flex-1" title={shareUrl ?? ""}>
+              {shareUrl ?? "Loading..."}
+            </code>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={handleCopy}
+              disabled={!shareUrl || isPending}
+              title="Copy link"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={handleRegenerate}
+              disabled={isPending}
+              title="Regenerate link (invalidates the current URL)"
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }

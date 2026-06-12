@@ -185,8 +185,12 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
                     <EditProjectBtn projectID={projects.projectID}/> 
                     <DeleteProjectBtn projectID={projects.projectID}/>
                     <AddCoverImageBtn projectID={projects.projectID}/>                                                  
-                    <ClientPortalBtn projectID={projects.projectID}/>
-                    <ClientPortalToggle projectID={projects.projectID}/>
+                    <ClientPortalBtn projectID={projects.projectID} token={projects.clientPortalToken ?? null}/>
+                    <ClientPortalToggle
+                      projectID={projects.projectID}
+                      initialState={!!projects.clientPortal}
+                      initialToken={projects.clientPortalToken ?? null}
+                    />
                   </div>
                 </div>
 

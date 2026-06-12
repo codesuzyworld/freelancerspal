@@ -34,13 +34,21 @@ interface ProjectPageProps {
   params: Promise<{
     id: string;
   }>;
+  searchParams: Promise<{ token?: string | string[] }>;
 }
 
-export default async function ProjectDetails({ params }: ProjectPageProps) {
+export default async function ProjectDetails({ params, searchParams }: ProjectPageProps) {
   const supabase = await createClient();
-  
+
   // Await the params object first
   const { id } = await params;
+  const sp = await searchParams;
+  const providedToken =
+    typeof sp.token === "string"
+      ? sp.token
+      : Array.isArray(sp.token)
+      ? sp.token[0]
+      : undefined;
 
 
 
@@ -54,6 +62,12 @@ export default async function ProjectDetails({ params }: ProjectPageProps) {
 
     // If client portal is not toggled, then just show message
     if (projectError || !projects) {
+        return redirect("/sign-in");
+    }
+
+    // Constant-time-ish comparison: require an exact match. If no token is set
+    // on the project OR no token is provided OR they don't match — reject.
+    if (!projects.clientPortalToken || !providedToken || projects.clientPortalToken !== providedToken) {
         return redirect("/sign-in");
     }
 
